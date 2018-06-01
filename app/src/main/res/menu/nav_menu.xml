@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/device"
+        android:menuCategory="container">
+        <item
+            android:id="@+id/nav_device"
+            android:icon="@drawable/ic_blueteeth_connected"
+            android:orderInCategory="0"
+            android:title="@string/zhanwei" />
+        <!--已绑定点击弹框是否需要解绑(确定：扫描新设备)，未绑定点击弹出扫描蓝牙-->
+        <item
+            android:id="@+id/nav_contract"
+            android:icon="@drawable/ic_contract"
+            android:orderInCategory="0"
+            android:title="@string/contract" />
+        <item
+            android:id="@+id/nav_offset_setting"
+            android:icon="@drawable/ic_offset_setting"
+            android:title="@string/offset_setting" />
+        <item
+            android:id="@+id/nav_instruction"
+            android:icon="@mipmap/instruction_book"
+            android:title="@string/instruction" />
+    </group>
+    <group
+        android:id="@+id/other"
+        android:menuCategory="container">
+        <item
+            android:id="@+id/nav_account"
+            android:icon="@drawable/ic_change_pwd"
+            android:title="@string/change_pwd" />
+        <item
+            android:id="@+id/nav_feedback"
+            android:icon="@mipmap/idea"
+            android:title="@string/account_feedback" />
+        <item
+            android:id="@+id/nav_link"
+            android:icon="@mipmap/contact"
+            android:title="@string/app_link" />
+    </group>
+    <group
+        android:id="@+id/app"
+        android:menuCategory="container">
+        <item
+            android:id="@+id/nav_version"
+            android:icon="@mipmap/update"
+            android:title="@string/app_update" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/account_logout" />
+    </group>
+</menu>
