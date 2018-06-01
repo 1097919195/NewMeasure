@@ -12,6 +12,7 @@ import com.example.gxkj.newmeasure.app.AppApplication;
 import com.example.gxkj.newmeasure.app.AppConstant;
 import com.example.gxkj.newmeasure.bean.LoginTokenData;
 import com.jaydenxiao.common.base.BaseActivity;
+import com.jaydenxiao.common.commonutils.LogUtils;
 import com.jaydenxiao.common.commonutils.SPUtils;
 import com.jaydenxiao.common.commonutils.ToastUtil;
 
@@ -56,6 +57,7 @@ public class AccountActivity extends BaseActivity<LoginPresenter,LoginModel> imp
     @Override
     public void returnGetToken(LoginTokenData tokenData) {
         SPUtils.setSharedStringData(AppApplication.getAppContext(),AppConstant.LOGIN_TOKEN,tokenData.getToken_type()+tokenData.getAccess_token());
+        LogUtils.loge(tokenData.getAccess_token());
         ToastUtil.showShort("登录成功！");
         MainActivity.startAction(AccountActivity.this);
     }

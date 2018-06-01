@@ -13,14 +13,23 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.gxkj.newmeasure.Contract.UserContract;
+import com.example.gxkj.newmeasure.Model.UserModel;
+import com.example.gxkj.newmeasure.Presenter.UserPresenter;
 import com.example.gxkj.newmeasure.R;
+import com.example.gxkj.newmeasure.bean.UserData;
 import com.jaydenxiao.common.base.BaseActivity;
+import com.jaydenxiao.common.commonutils.ToastUtil;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
-    public NavigationView navView;
-    private DrawerLayout drawerLayout;
+public class MainActivity extends BaseActivity<UserPresenter,UserModel> implements UserContract.View , NavigationView.OnNavigationItemSelectedListener {
+    @BindView(R.id.nav_view)
+    NavigationView navView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     public static void startAction(Activity activity) {
         Intent intent = new Intent(activity, MainActivity.class);
@@ -34,25 +43,43 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public void initPresenter() {
-
+        mPresenter.setVM(this, mModel);
     }
 
     @Override
     public void initView() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        navView = (NavigationView) findViewById(R.id.nav_view);
         navView.setNavigationItemSelectedListener(this);
         navView.getMenu().removeItem(R.id.nav_device);
+        toolbar.setBackgroundColor(getResources().getColor(R.color.main_color));
+
+        mPresenter.getUserDataRequset();
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
+    }
+
+    @Override
+    public void returnGetUserData(UserData userData) {
+    }
+
+    @Override
+    public void showLoading(String title) {
+
+    }
+
+    @Override
+    public void stopLoading() {
+
+    }
+
+    @Override
+    public void showErrorTip(String msg) {
+        ToastUtil.showShort(msg);
     }
 }

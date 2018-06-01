@@ -2,12 +2,15 @@ package com.example.gxkj.newmeasure.api;
 
 
 
+import com.example.gxkj.newmeasure.bean.HttpResponse;
 import com.example.gxkj.newmeasure.bean.LoginTokenData;
+import com.example.gxkj.newmeasure.bean.UserData;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -125,9 +128,16 @@ public interface ApiService {
     //登录
     @FormUrlEncoded
     @POST("api/client/login")
-    Observable<LoginTokenData> getTokenWithSignIn(
+    Observable<HttpResponse<LoginTokenData>> getTokenWithSignIn(
             @Field("mobile") String username,
             @Field("password") String password
     );
+
+    //获取自己的信息
+    @POST("api/client/me")
+    Observable<HttpResponse<UserData>> getUser(
+    );
+
+
 
 }

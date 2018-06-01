@@ -14,7 +14,7 @@
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay"
             app:elevation="0dp"
             >
@@ -22,12 +22,38 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-                app:title="格心企业版"
-                app:navigationIcon="@color/white"/>
+                android:background="@color/primary"
+                app:title="格心企业版" />
         </android.support.design.widget.AppBarLayout>
+
+        <ImageView
+            android:id="@+id/scan_img"
+            android:layout_width="181dp"
+            android:layout_height="181dp"
+            android:scaleType="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="120dp"
+            android:src="@mipmap/qrcode" />
+
+        <TextView
+            android:id="@+id/scan_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="19dp"
+            android:text="@string/scan"
+            android:textColor="@color/primary"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:text="@string/slogan_scan"
+            android:textAlignment="center"
+            android:textColor="@color/primary"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
