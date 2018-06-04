@@ -108,6 +108,7 @@ public class Api {
                 //将请求体设置给请求方法内
                 Request build = chain.request().newBuilder()
                         //使用 addHeader(name, value) 方法来为 HTTP 头添加新的值
+                        .addHeader("Accept","application/json")
                         .addHeader("Authorization", jwt)
                         .addHeader("Content-Type", "application/json")//Content-Type向接收方指示实体的介质类型，指定HEAD方法送到接收方的实体介质类型，或GET方法发送的请求介质类型
                         .build();

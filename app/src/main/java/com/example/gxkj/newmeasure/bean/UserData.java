@@ -26,10 +26,6 @@ public class UserData {
     private String state;
     private String remark;
     private String mtm_id;
-    private String updated_at;
-    private String created_at;
-    private String last_login_at;
-    private String last_ip;
 
     public String get_id() {
         return _id;
@@ -85,37 +81,5 @@ public class UserData {
 
     public void setMtm_id(String mtm_id) {
         this.mtm_id = mtm_id;
-    }
-
-    public String getUpdated_at() {
-        return updated_at;
-    }
-
-    public void setUpdated_at(String updated_at) {
-        this.updated_at = updated_at;
-    }
-
-    public String getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
-    }
-
-    public String getLast_login_at() {
-        return last_login_at;
-    }
-
-    public void setLast_login_at(String last_login_at) {
-        this.last_login_at = last_login_at;
-    }
-
-    public String getLast_ip() {
-        return last_ip;
-    }
-
-    public void setLast_ip(String last_ip) {
-        this.last_ip = last_ip;
     }
 }

@@ -2,17 +2,19 @@ package com.example.gxkj.newmeasure.api;
 
 
 
+import com.example.gxkj.newmeasure.bean.ContractNumWithPartsData;
 import com.example.gxkj.newmeasure.bean.HttpResponse;
 import com.example.gxkj.newmeasure.bean.LoginTokenData;
+import com.example.gxkj.newmeasure.bean.MeasureCustomer;
 import com.example.gxkj.newmeasure.bean.UserData;
+import com.example.gxkj.newmeasure.bean.MeasureWeChat;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
+import retrofit2.http.Path;
 
 /**
  * des:ApiService
@@ -137,6 +139,26 @@ public interface ApiService {
     @POST("api/client/me")
     Observable<HttpResponse<UserData>> getUser(
     );
+
+    //修改合同号判断
+    @GET("api/client/measure_contracts/{id}")
+    Observable<HttpResponse<ContractNumWithPartsData>> changeContractNum(
+            @Path("id") String id
+    );
+
+    //合同成员的部位获取显示
+    @FormUrlEncoded
+    @POST("api/client/measurement_user")
+    Observable<HttpResponse<MeasureCustomer>> MeasureCustomer(
+            @Field("tid") String tid
+    );
+
+    //微信用户的部位获取显示
+    @GET("api/client/get_info_with_open_id/{openID}")
+    Observable<HttpResponse<MeasureWeChat>> MeasureWeChat(
+            @Path("openID") String openID
+    );
+
 
 
 
