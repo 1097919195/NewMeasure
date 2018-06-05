@@ -1,6 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:navigationIcon="@mipmap/left"
+            app:title="量体"
+            android:theme="@style/AppTheme.AppBarOverlay">
+        </android.support.v7.widget.Toolbar>
+
+        <include
+            layout="@layout/view_measurer_info" />
+
+        <TextView
+            android:id="@+id/unmeasured_item_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/white"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:text="待测部位"
+            android:textAlignment="center"
+            android:textColor="@color/unmeasured"
+            android:textSize="42sp" />
+
+        <LinearLayout
+            android:id="@+id/item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/measure_layout_header_bg">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp"
+                android:text="量体部位"
+                android:textAlignment="center" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/c999" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:paddingBottom="3dp"
+                android:paddingTop="3dp"
+                android:text="测量结果(cm/°)"
+                android:textAlignment="center" />
+
+            <!--<View-->
+                <!--android:layout_width="1dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@color/c999" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_weight="1"-->
+                <!--android:paddingBottom="3dp"-->
+                <!--android:paddingTop="3dp"-->
+                <!--android:text="尺寸调整(cm/°)"-->
+                <!--android:textAlignment="center" />-->
+        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcy_measureData"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
+    <Button
+        android:layout_alignParentBottom="true"
+        android:id="@+id/save_measure_result"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom"
+        android:background="@color/primary"
+        android:text="保存"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="22sp"/>
+
+</RelativeLayout>

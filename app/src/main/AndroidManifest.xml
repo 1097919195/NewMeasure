@@ -41,6 +41,7 @@
         <activity android:name=".camera.CaptureActivity" />
         <activity android:name=".activity.SplashActivity" />
         <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.MeasureActivity" />
     </application>
 
 </manifest>

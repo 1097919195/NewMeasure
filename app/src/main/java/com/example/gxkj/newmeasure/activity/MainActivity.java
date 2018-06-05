@@ -77,6 +77,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     public static final int REQUEST_CODE_MEASURE = 1202;
     private static final int SCAN_HINT = 1001;
     private static final int CODE_HINT = 1002;
+    ArrayList<ContractNumWithPartsData.Parts> partsArrayList = new ArrayList<>();
 
 
     public static void startAction(Activity activity) {
@@ -472,18 +473,33 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                     .setIcon(R.drawable.ic_contract);
         }
         SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_NUM, contract);//设置合同号，下次初始化进入直接加载对应的合同号
-
+        partsArrayList = contractNumWithPartsData.getParts();
+        LogUtils.loge(String.valueOf(partsArrayList.size()));
     }
 
     //根据合同号来获取对应的量体部位
     @Override
     public void returnMeasureCustomerData(MeasureCustomer measureCustomer) {
-        ToastUtil.showShort(measureCustomer.getName());
+        if (partsArrayList != null) {
+            MeasureActivity.startAction(MainActivity.this, partsArrayList, measureCustomer.getAvatar(), measureCustomer.getName(), measureCustomer.getGender());
+        } else {
+            ToastUtil.showShort("请先设置合同号");
+        }
     }
 
     @Override
     public void returnMeasureWeChatData(MeasureWeChat measureWeChat) {
-        ToastUtil.showShort(measureWeChat.getName());
+        if (SPUtils.getSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_NUM).equals("default")) {
+            if (partsArrayList != null) {
+                MeasureActivity.startAction(MainActivity.this, partsArrayList, measureWeChat.getAvatar(), measureWeChat.getNickname(), measureWeChat.getGender());
+            } else {
+                ToastUtil.showShort("请先设置合同号");
+            }
+
+        } else {
+            ToastUtil.showShort("当前为合同量体请先恢复为默认量体再进行微信用户的量体");
+        }
+
     }
 
 
@@ -506,5 +522,14 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         if (msg == "connectFail") {
             cirProgressBarWithChoose.dismiss();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(navView)) {
+            drawerLayout.closeDrawers();
+            return;
+        }
+        super.onBackPressed();
     }
 }

@@ -79,7 +79,7 @@ public class ContractNumWithPartsData implements Parcelable{
         dest.writeString(name);
     }
 
-    private static class Parts implements Parcelable{
+    public static class Parts implements Parcelable{
         private String name;
 
         protected Parts(Parcel in) {

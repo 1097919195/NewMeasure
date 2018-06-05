@@ -21,9 +21,18 @@ public class MeasureCustomer {
     private String department;
     private String mobile;
     private int gender;
+    private String avatar;
     private String position;
     private int height;
     private int weight;
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public String get_id() {
         return _id;
