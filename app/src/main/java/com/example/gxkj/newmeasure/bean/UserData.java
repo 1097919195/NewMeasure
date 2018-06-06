@@ -27,6 +27,25 @@ public class UserData {
     private String remark;
     private String mtm_id;
 
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
+
+    public int getMonthCount() {
+        return monthCount;
+    }
+
+    public void setMonthCount(int monthCount) {
+        this.monthCount = monthCount;
+    }
+
+    private int totalCount;
+    private int monthCount;
+
     public String get_id() {
         return _id;
     }

@@ -41,7 +41,7 @@ public interface MainContract {
 
         void returnChangeContractNum(ContractNumWithPartsData contractNumWithPartsData, String contract);
 
-        void returnMeasureCustomerData(MeasureCustomer measureCustomer);
+        void returnMeasureCustomerData(MeasureCustomer measureCustomer, String tid);
 
         void returnMeasureWeChatData(MeasureWeChat measureWeChat);
     }

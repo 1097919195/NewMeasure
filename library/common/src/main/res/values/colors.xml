@@ -15,6 +15,7 @@
     <color name="night_there_text_color">#8A9599</color>
     <!-- app主色调-->
     <color name="main_color">#3385d9</color>
+    <!--<color name="main_color">#4169E1</color>-->
     <color name="orange">#FA8C20</color>
     <color name="wheel_divider_line_color">#FF000000</color>
     <color name="wheel_item_text_color_selected">#FF0288ce</color>

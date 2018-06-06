@@ -1,9 +1,15 @@
 package com.example.gxkj.newmeasure.Model;
 
 import com.example.gxkj.newmeasure.Contract.MeasureContract;
+import com.example.gxkj.newmeasure.api.Api;
+import com.example.gxkj.newmeasure.api.HostType;
 import com.example.gxkj.newmeasure.app.AppApplication;
 import com.example.gxkj.newmeasure.app.AppConstant;
+import com.example.gxkj.newmeasure.bean.HttpResponse;
+import com.example.gxkj.newmeasure.bean.MultipartBeanWithUserData;
+import com.google.gson.Gson;
 import com.jaydenxiao.common.baserx.RxSchedulers;
+import com.jaydenxiao.common.commonutils.LogUtils;
 import com.jaydenxiao.common.commonutils.SPUtils;
 import com.polidea.rxandroidble2.RxBleClient;
 import com.polidea.rxandroidble2.RxBleConnection;
@@ -34,4 +40,21 @@ public class MeasureModel implements MeasureContract.Model {
                 .observeConnectionStateChanges()
                 .compose(RxSchedulers.io_main());
     }
+
+//    @Override
+//    public Observable<HttpResponse> upLoadMeasureResult(MultipartBeanWithUserData user_data, String[] images, Object[][] data, String contract_id) {
+//        String s = (new Gson()).toJson(user_data);
+//        return Api.getDefault(HostType.QUALITY_DATA)
+//                .upLoadMeasureResult(s, images, data, contract_id)
+//                .compose(RxSchedulers.io_main());
+//    }
+
+    @Override
+    public Observable<HttpResponse> upLoadMeasureResult(String tid, String openID, int sex, String[] images, Object[][] data, String contract_id) {
+        return Api.getDefault(HostType.QUALITY_DATA)
+                .upLoadMeasureResult(tid, openID, sex, images, data, contract_id)
+                .compose(RxSchedulers.io_main());
+    }
+
+
 }

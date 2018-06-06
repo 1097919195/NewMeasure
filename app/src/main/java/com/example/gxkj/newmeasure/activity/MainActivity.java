@@ -78,12 +78,19 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     private static final int SCAN_HINT = 1001;
     private static final int CODE_HINT = 1002;
     ArrayList<ContractNumWithPartsData.Parts> partsArrayList = new ArrayList<>();
+    String contractID;
 
 
     public static void startAction(Activity activity) {
         Intent intent = new Intent(activity, MainActivity.class);
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.getUserDataRequset();
     }
 
     @Override
@@ -110,7 +117,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         initListener();
         initDrawerMenuContent();
         initRxBus2FindBle();
-        mPresenter.getUserDataRequset();
     }
 
     private void initListener() {
@@ -150,9 +156,9 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
                                 int tidIndex = result.indexOf("tid") + "tid".length() + 1;
                                 String s = result.substring(tidIndex);
-                                String params = s.substring(s.indexOf("?") + 1, s.length());
-                                LogUtils.loge(params);
-                                mPresenter.MeasureCustomerDataRequest(params);
+                                String tid = s.substring(s.indexOf("?") + 1, s.length());
+                                LogUtils.loge(tid);
+                                mPresenter.MeasureCustomerDataRequest(tid);
                             } else {
                                 //微信用户
                                 mPresenter.MeasureWeChatDataRequest(result);
@@ -416,6 +422,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     @Override
     public void returnGetUserData(UserData userData) {
         userNameView.setText(userData.getName());
+        currTimesView.setText(String.valueOf(userData.getMonthCount()));
+        totalTimesView.setText(String.valueOf(userData.getTotalCount()));
     }
 
     //获取附近的蓝牙设备
@@ -466,11 +474,13 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
             navView.getMenu()
                     .add(R.id.device, R.id.nav_contract, 1, "合同号(" + contractNumWithPartsData.getName() + ")")
                     .setIcon(R.drawable.ic_contract);
+            SPUtils.setSharedStringData(AppApplication.getAppContext(),AppConstant.CONTRACT_ID_SP,contractNumWithPartsData.get_id());//设置合同id
         } else {
             navView.getMenu().removeItem(R.id.nav_contract);
             navView.getMenu()
                     .add(R.id.device, R.id.nav_contract, 1, "合同号(默认)")
                     .setIcon(R.drawable.ic_contract);
+            SPUtils.setSharedStringData(AppApplication.getAppContext(),AppConstant.CONTRACT_ID_SP,"default");//设置合同id
         }
         SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_NUM, contract);//设置合同号，下次初始化进入直接加载对应的合同号
         partsArrayList = contractNumWithPartsData.getParts();
@@ -479,9 +489,10 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
     //根据合同号来获取对应的量体部位
     @Override
-    public void returnMeasureCustomerData(MeasureCustomer measureCustomer) {
+    public void returnMeasureCustomerData(MeasureCustomer measureCustomer,String tid) {
         if (partsArrayList != null) {
-            MeasureActivity.startAction(MainActivity.this, partsArrayList, measureCustomer.getAvatar(), measureCustomer.getName(), measureCustomer.getGender());
+            contractID = SPUtils.getSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_ID_SP);
+            MeasureActivity.startAction(MainActivity.this, partsArrayList, measureCustomer.getAvatar(), measureCustomer.getName(), measureCustomer.getGender(), 1, tid, contractID);
         } else {
             ToastUtil.showShort("请先设置合同号");
         }
@@ -489,15 +500,16 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
     @Override
     public void returnMeasureWeChatData(MeasureWeChat measureWeChat) {
-        if (SPUtils.getSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_NUM).equals("default")) {
-            if (partsArrayList != null) {
-                MeasureActivity.startAction(MainActivity.this, partsArrayList, measureWeChat.getAvatar(), measureWeChat.getNickname(), measureWeChat.getGender());
-            } else {
-                ToastUtil.showShort("请先设置合同号");
-            }
-
+//        if (SPUtils.getSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_NUM).equals("default")) {
+//
+//        } else {
+//            ToastUtil.showShort("当前为合同量体请先恢复为默认量体再进行微信用户的量体");
+//        }
+        if (partsArrayList != null) {
+            contractID = SPUtils.getSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_ID_SP);
+            MeasureActivity.startAction(MainActivity.this, partsArrayList, measureWeChat.getAvatar(), measureWeChat.getNickname(), measureWeChat.getGender(), 2, measureWeChat.getOpenID(), contractID);
         } else {
-            ToastUtil.showShort("当前为合同量体请先恢复为默认量体再进行微信用户的量体");
+            ToastUtil.showShort("请先设置合同号");
         }
 
     }

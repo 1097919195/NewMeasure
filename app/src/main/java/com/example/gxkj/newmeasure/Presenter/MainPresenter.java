@@ -60,7 +60,7 @@ public class MainPresenter extends MainContract.Presenter {
 
     @Override
     public void changeContractNumRequest(String id) {
-        mRxManage.add(mModel.changeContractNum(id).subscribeWith(new RxSubscriber<ContractNumWithPartsData>(mContext, true) {
+        mRxManage.add(mModel.changeContractNum(id).subscribeWith(new RxSubscriber<ContractNumWithPartsData>(mContext, false) {
             @Override
             protected void _onNext(ContractNumWithPartsData contractNumWithPartsData) {
                 mView.returnChangeContractNum(contractNumWithPartsData,id);
@@ -78,7 +78,7 @@ public class MainPresenter extends MainContract.Presenter {
         mRxManage.add(mModel.MeasureCustomerData(tid).subscribeWith(new RxSubscriber<MeasureCustomer>(mContext, true) {
             @Override
             protected void _onNext(MeasureCustomer measureCustomer) {
-                mView.returnMeasureCustomerData(measureCustomer);
+                mView.returnMeasureCustomerData(measureCustomer,tid);
             }
 
             @Override

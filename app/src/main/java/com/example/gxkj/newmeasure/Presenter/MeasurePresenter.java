@@ -2,7 +2,9 @@ package com.example.gxkj.newmeasure.Presenter;
 
 import com.example.gxkj.newmeasure.Contract.MeasureContract;
 import com.example.gxkj.newmeasure.app.AppConstant;
+import com.example.gxkj.newmeasure.bean.HttpResponse;
 import com.example.gxkj.newmeasure.utils.HexString;
+import com.example.gxkj.newmeasure.bean.MultipartBeanWithUserData;
 import com.jaydenxiao.common.baserx.RxSubscriber;
 
 import java.util.UUID;
@@ -51,4 +53,36 @@ public class MeasurePresenter extends MeasureContract.Presenter{
                         connectedState->mView.returnCheckBleConnectState(connectedState)
                 ));
     }
+
+//    @Override
+//    public void upLoadMeasureResultRequset(MultipartBeanWithUserData user_data, String[] images, Object[][] data, String contract_id) {
+//        mRxManage.add(mModel.upLoadMeasureResult(user_data, images, data, contract_id).subscribeWith(new RxSubscriber<HttpResponse>(mContext, true) {
+//            @Override
+//            protected void _onNext(HttpResponse httpResponse) {
+//                mView.returnUpLoadMeasureResult(httpResponse);
+//            }
+//
+//            @Override
+//            protected void _onError(String message) {
+//                mView.showErrorTip(message);
+//            }
+//        }));
+//    }
+
+    @Override
+    public void upLoadMeasureResultRequset(String tid, String openID, int sex, String[] images, Object[][] data, String contract_id) {
+        mRxManage.add(mModel.upLoadMeasureResult(tid, openID, sex, images, data, contract_id).subscribeWith(new RxSubscriber<HttpResponse>(mContext, true) {
+            @Override
+            protected void _onNext(HttpResponse httpResponse) {
+                mView.returnUpLoadMeasureResult(httpResponse);
+            }
+
+            @Override
+            protected void _onError(String message) {
+                mView.showErrorTip(message);
+            }
+        }));
+    }
+
+
 }

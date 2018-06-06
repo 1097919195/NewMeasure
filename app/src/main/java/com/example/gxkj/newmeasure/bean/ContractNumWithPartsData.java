@@ -81,9 +81,37 @@ public class ContractNumWithPartsData implements Parcelable{
 
     public static class Parts implements Parcelable{
         private String name;
+        private float value;
+        private boolean isSelected;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public float getValue() {
+            return value;
+        }
+
+        public void setValue(float value) {
+            this.value = value;
+        }
+
+        public boolean isSelected() {
+            return isSelected;
+        }
+
+        public void setSelected(boolean selected) {
+            isSelected = selected;
+        }
 
         protected Parts(Parcel in) {
             name = in.readString();
+            value = in.readFloat();
+            isSelected = in.readByte() != 0;
         }
 
         public static final Creator<Parts> CREATOR = new Creator<Parts>() {
@@ -98,14 +126,6 @@ public class ContractNumWithPartsData implements Parcelable{
             }
         };
 
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
         @Override
         public int describeContents() {
             return 0;
@@ -114,6 +134,8 @@ public class ContractNumWithPartsData implements Parcelable{
         @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeString(name);
+            dest.writeFloat(value);
+            dest.writeByte((byte) (isSelected ? 1 : 0));
         }
     }
 }

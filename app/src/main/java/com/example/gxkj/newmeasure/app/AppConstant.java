@@ -22,6 +22,11 @@ public class AppConstant {
     public static final String PARTS_USER_PHOTO = "PARTS_USER_PHOTO";
     public static final String PARTS_USER_NAME = "PARTS_USER_NAME";
     public static final String PARTS_USER_GENDER = "PARTS_USER_GENDER";
+    public static final String SIGN_TID_OR_OPENID = "SIGN_TID_OR_OPENID";
+    public static final String TID_OR_OPENID = "TID_OR_OPENID";
+    public static final String CONTRACT_ID = "CONTRACT_ID";
+    public static final String CONTRACT_ID_SP = "CONTRACT_ID_SP";
+    public static final String DISPLAY_BIG_PART = "DISPLAY_BIG_PART";
 
 
 }

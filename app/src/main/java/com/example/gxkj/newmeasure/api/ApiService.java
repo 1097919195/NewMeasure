@@ -13,7 +13,9 @@ import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 /**
@@ -159,7 +161,27 @@ public interface ApiService {
             @Path("openID") String openID
     );
 
+//    //上传量体的数据
+//    @Multipart
+//    @POST("api/client/measurements")
+//    Observable<HttpResponse> upLoadMeasureResult(
+//            @Part("user_data") String user_data,
+//            @Part("images") String[] images,
+//            @Part("data") Object[][] data,
+//            @Part("contract_id") String contract_id
+//    );
 
+    //上传量体的数据
+    @FormUrlEncoded
+    @POST("api/client/measurements")
+    Observable<HttpResponse> upLoadMeasureResult(
+            @Field("tid") String tid,
+            @Field("openID") String openID,
+            @Field("sex") int sex,
+            @Field("images") String[] images,
+            @Field("data") Object[][] data,
+            @Field("contract_id") String contract_id
+    );
 
 
 }
