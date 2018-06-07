@@ -91,6 +91,7 @@ public abstract class RxSubscriber<T> extends DisposableObserver<T> {
     }
     @Override
     public void onError(Throwable e) {
+        LogUtils.loge("RxJava_onError  "+e.getMessage());
 //        if (e instanceof HttpException) {
 //            HttpException exception = (HttpException) e;
 //            int code = exception.response().code();

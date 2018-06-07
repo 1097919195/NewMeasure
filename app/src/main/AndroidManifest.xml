@@ -42,6 +42,7 @@
         <activity android:name=".activity.SplashActivity" />
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.MeasureActivity" />
+        <activity android:name=".activity.ManagePassWordActicity" />
     </application>
 
 </manifest>

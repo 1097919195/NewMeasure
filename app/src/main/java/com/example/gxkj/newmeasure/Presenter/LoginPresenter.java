@@ -19,7 +19,7 @@ public class LoginPresenter extends LoginContract.Presenter {
 
             @Override
             protected void _onError(String message) {
-                mView.showErrorTip("账号或者密码错误");
+                mView.showErrorTip(message);
             }
         }));
     }

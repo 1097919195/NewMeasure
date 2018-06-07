@@ -2,6 +2,7 @@ package com.example.gxkj.newmeasure.Presenter;
 
 import com.example.gxkj.newmeasure.Contract.MainContract;
 import com.example.gxkj.newmeasure.bean.ContractNumWithPartsData;
+import com.example.gxkj.newmeasure.bean.HttpResponse;
 import com.example.gxkj.newmeasure.bean.MeasureCustomer;
 import com.example.gxkj.newmeasure.bean.MeasureWeChat;
 import com.example.gxkj.newmeasure.bean.UserData;

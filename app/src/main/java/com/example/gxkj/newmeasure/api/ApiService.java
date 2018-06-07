@@ -9,7 +9,12 @@ import com.example.gxkj.newmeasure.bean.MeasureCustomer;
 import com.example.gxkj.newmeasure.bean.UserData;
 import com.example.gxkj.newmeasure.bean.MeasureWeChat;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -17,6 +22,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * des:ApiService
@@ -161,26 +167,24 @@ public interface ApiService {
             @Path("openID") String openID
     );
 
-//    //上传量体的数据
-//    @Multipart
-//    @POST("api/client/measurements")
-//    Observable<HttpResponse> upLoadMeasureResult(
-//            @Part("user_data") String user_data,
-//            @Part("images") String[] images,
-//            @Part("data") Object[][] data,
-//            @Part("contract_id") String contract_id
-//    );
-
     //上传量体的数据
-    @FormUrlEncoded
+    @Multipart//一定要一个部位空的part参数
     @POST("api/client/measurements")
     Observable<HttpResponse> upLoadMeasureResult(
-            @Field("tid") String tid,
-            @Field("openID") String openID,
-            @Field("sex") int sex,
-            @Field("images") String[] images,
-            @Field("data") Object[][] data,
-            @Field("contract_id") String contract_id
+            @Query("tid") String tid,
+            @Query("openID") String openID,
+            @Part("sex") int sex,
+            @Part MultipartBody.Part[] images,
+            @Query("data") String data,
+            @Query("contract_id") String contract_id
+    );
+
+    //客户端修改密码
+    @FormUrlEncoded
+    @POST("api/client/reset")
+    Observable<HttpResponse> changePassword(
+            @Field("old_password") String old_password,
+            @Field("new_password") String new_password
     );
 
 

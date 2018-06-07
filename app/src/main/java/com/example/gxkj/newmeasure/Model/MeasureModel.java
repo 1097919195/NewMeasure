@@ -5,6 +5,7 @@ import com.example.gxkj.newmeasure.api.Api;
 import com.example.gxkj.newmeasure.api.HostType;
 import com.example.gxkj.newmeasure.app.AppApplication;
 import com.example.gxkj.newmeasure.app.AppConstant;
+import com.example.gxkj.newmeasure.bean.ContractNumWithPartsData;
 import com.example.gxkj.newmeasure.bean.HttpResponse;
 import com.example.gxkj.newmeasure.bean.MultipartBeanWithUserData;
 import com.google.gson.Gson;
@@ -14,9 +15,13 @@ import com.jaydenxiao.common.commonutils.SPUtils;
 import com.polidea.rxandroidble2.RxBleClient;
 import com.polidea.rxandroidble2.RxBleConnection;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 
 /**
  * Created by Administrator on 2018/6/4 0004.
@@ -50,9 +55,10 @@ public class MeasureModel implements MeasureContract.Model {
 //    }
 
     @Override
-    public Observable<HttpResponse> upLoadMeasureResult(String tid, String openID, int sex, String[] images, Object[][] data, String contract_id) {
+    public Observable<HttpResponse> upLoadMeasureResult(String tid, String openID, int sex, MultipartBody.Part[] images, MultipartBeanWithUserData data, String contract_id) {
+        String s = (new Gson()).toJson(data);
         return Api.getDefault(HostType.QUALITY_DATA)
-                .upLoadMeasureResult(tid, openID, sex, images, data, contract_id)
+                .upLoadMeasureResult(tid, openID, sex, images, s, contract_id)
                 .compose(RxSchedulers.io_main());
     }
 

@@ -1,6 +1,7 @@
 package com.example.gxkj.newmeasure.Contract;
 
 import com.example.gxkj.newmeasure.bean.ContractNumWithPartsData;
+import com.example.gxkj.newmeasure.bean.HttpResponse;
 import com.example.gxkj.newmeasure.bean.MeasureCustomer;
 import com.example.gxkj.newmeasure.bean.MeasureWeChat;
 import com.example.gxkj.newmeasure.bean.UserData;
@@ -30,6 +31,7 @@ public interface MainContract {
         Observable<MeasureCustomer> MeasureCustomerData(String tid);
 
         Observable<MeasureWeChat> MeasureWeChatData(String openID);
+
     }
 
     interface View extends BaseView {
@@ -44,6 +46,7 @@ public interface MainContract {
         void returnMeasureCustomerData(MeasureCustomer measureCustomer, String tid);
 
         void returnMeasureWeChatData(MeasureWeChat measureWeChat);
+
     }
 
     abstract class Presenter extends BasePresenter<View, Model> {
@@ -58,5 +61,6 @@ public interface MainContract {
         public abstract void MeasureCustomerDataRequest(String tid);
 
         public abstract void MeasureWeChatDataRequest(String openID);
+
     }
 }

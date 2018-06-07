@@ -3,10 +3,19 @@ package com.example.gxkj.newmeasure.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.ArrayMap;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +30,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.aspsine.irecyclerview.universaladapter.ViewHolderHelper;
 import com.aspsine.irecyclerview.universaladapter.recyclerview.CommonRecycleViewAdapter;
 import com.aspsine.irecyclerview.universaladapter.recyclerview.OnItemClickListener;
+import com.example.gxkj.newmeasure.BuildConfig;
 import com.example.gxkj.newmeasure.Contract.MeasureContract;
 import com.example.gxkj.newmeasure.Model.MeasureModel;
 import com.example.gxkj.newmeasure.Presenter.MeasurePresenter;
@@ -30,6 +40,7 @@ import com.example.gxkj.newmeasure.app.AppConstant;
 import com.example.gxkj.newmeasure.bean.ContractNumWithPartsData;
 import com.example.gxkj.newmeasure.bean.HttpResponse;
 import com.example.gxkj.newmeasure.bean.MultipartBeanWithUserData;
+import com.example.gxkj.newmeasure.utils.BitmapUtils;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jaydenxiao.common.base.BaseActivity;
 import com.jaydenxiao.common.baserx.RxBus2;
@@ -45,13 +56,25 @@ import com.unisound.client.SpeechSynthesizer;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import io.reactivex.functions.Consumer;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * Created by Administrator on 2018/6/1 0001.
@@ -77,6 +100,19 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
     @BindView(R.id.unmeasured_item_hint)
     TextView unmeasured_item_hint;
 
+    @BindView(R.id.frame_1)
+    FrameLayout frame1;
+    @BindView(R.id.frame_2)
+    FrameLayout frame2;
+    @BindView(R.id.frame_3)
+    FrameLayout frame3;
+    @BindView(R.id.img_1)
+    ImageView img1;
+    @BindView(R.id.img_2)
+    ImageView img2;
+    @BindView(R.id.img_3)
+    ImageView img3;
+
     ArrayList<ContractNumWithPartsData.Parts> partsArrayList = new ArrayList<>();
     CommonRecycleViewAdapter<ContractNumWithPartsData.Parts> adapter;
     public static final String FEMALE = "女";
@@ -87,7 +123,6 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
     String uuidString = SPUtils.getSharedStringData(AppApplication.getAppContext(), AppConstant.UUID);
     UUID characteristicUUID = null;
 
-    float measurelength = 0;
     int unMeasuredCounts = 0;
     int measuredCounts = 0;
     int itemPostion = 0;
@@ -97,6 +132,13 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
     private List<FrameLayout> unVisibleView = new ArrayList<>();
     public static final int BATTERY_LOW = 30;
     public static final int BATTERY_HIGH = 80;
+    public static final int TAKE_PHOTO = 1222;
+    // 保存图片的文件
+    private File imageFile;
+    private Uri imageUri;
+    public static final File PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+    public static final String JPG_SUFFIX = ".jpg";
+    private String picName;
     MenuItem batteryItem;
 
 
@@ -181,6 +223,19 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
         });
     }
 
+    @OnClick({R.id.del_1, R.id.del_2, R.id.del_3})
+    public void onClick(View v){
+        switch (v.getId()) {
+            case R.id.del_1:
+            case R.id.del_2:
+            case R.id.del_3:
+                delPic((ImageView) v);
+                break;
+            default:
+                break;
+        }
+    }
+
     private void initListener() {
         genderLine.setOnClickListener(v -> {
             switchGender();
@@ -188,12 +243,11 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
 
         camera_add.setOnClickListener(v -> {
             if (unVisibleView.size() > 0) {
-//                capturePic();
+                capturePic();
             } else {
                 ToastUtil.showShort("已拍照三张特体图片");
             }
         });
-
 
         RxView.clicks(save_measure_result)
                 .throttleFirst(2, TimeUnit.SECONDS)
@@ -212,12 +266,6 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
                                 String contractID = getIntent().getStringExtra(AppConstant.CONTRACT_ID);
                                 String tidOrOpenID = getIntent().getStringExtra(AppConstant.TID_OR_OPENID);
                                 //user_data[]----sex AND tidOrOpenID
-
-                                //first
-                                MultipartBeanWithUserData user_data = new MultipartBeanWithUserData();
-                                user_data.setSex(sex);
-                                user_data.setOpenID(tidOrOpenID);
-                                //sencond
                                 String tid = tidOrOpenID;
                                 String openID = tidOrOpenID;
                                 if (getIntent().getIntExtra(AppConstant.SIGN_TID_OR_OPENID, 1) == 1) {
@@ -225,20 +273,37 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
                                 } else {
                                     tid = "";
                                 }
-                                //images(一维数组)
-                                String[] images = new String[3];
-                                //partsData(二维数组)
-                                List<String> parts = new ArrayList<>();
-                                List<Float> measureValue = new ArrayList<>();
-                                for (ContractNumWithPartsData.Parts partsData : partsArrayList) {
-                                    parts.add(partsData.getName());
+                                //images
+                                MultipartBody.Part[] images = new MultipartBody.Part[3];
+                                if (img1.getDrawable() != null) {
+                                    images[0] = getSpecialBodyTypePic((String) img1.getTag());
                                 }
-                                String[] stringsParts = (String[]) parts.toArray(new String[parts.size()]);
-                                Float[] stringsValue = (Float[]) measureValue.toArray(new Float[measureValue.size()]);
-                                Object[][] data = {stringsParts, stringsValue};
+                                if (img2.getDrawable() != null) {
+                                    images[1] = getSpecialBodyTypePic((String) img2.getTag());
+                                }
+                                if (img3.getDrawable() != null) {
+                                    images[2] = getSpecialBodyTypePic((String) img3.getTag());
+                                }
+//                                partsData
+                                MultipartBeanWithUserData multipartData = new MultipartBeanWithUserData(partsArrayList);
+//                                List<String> parts = new ArrayList<>();
+//                                List<Float> measureValue = new ArrayList<>();
+//                                for (ContractNumWithPartsData.Parts partsData : partsArrayList) {
+//                                    parts.add(partsData.getName());
+//                                }
+//                                for (ContractNumWithPartsData.Parts partsData : partsArrayList) {
+//                                    measureValue.add(partsData.getValue());
+//                                }
+//                                String[] stringsParts = (String[]) parts.toArray(new String[parts.size()]);
+//                                Float[] stringsValue = (Float[]) measureValue.toArray(new Float[measureValue.size()]);
+//                                Object[][] data = {stringsParts, stringsValue};
+//
+//                                Map<List<String>, List<Float>> dataMap = new HashMap<List<String>, List<Float>>();
+//                                dataMap.put(parts, measureValue);
+
+
                                 //发送保存测量结果请求
-//                                mPresenter.upLoadMeasureResultRequset(user_data,images,data,contractID);
-                                mPresenter.upLoadMeasureResultRequset(tid, openID, sex, images, data, contractID);
+                                mPresenter.upLoadMeasureResultRequset(tid, openID, sex, images, multipartData, contractID);
                             } else {
                                 ToastUtil.showShort("请先测完所有部位在进行保存！");
                             }
@@ -250,46 +315,99 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
                 });
     }
 
-//    private void capturePic() {
-//        Date date = new Date(System.nanoTime());
-//        try {
-//            MessageDigest md = MessageDigest.getInstance("MD5");
-//            // 计算md5函数
-//            md.update(date.toString().getBytes());
-//            picName = new BigInteger(1, md.digest()).toString(16);
-//        } catch (NoSuchAlgorithmException e) {
-//            picName = date.toString();
-//        }
-//        File storageFile = new File(PATH.getAbsoluteFile() + File.separator + Constant.FILE_PROVIDER_NAME);
-//        if (!storageFile.isDirectory()) {
-//            storageFile.mkdirs();
-//        }
-//        File outputImage = new File(storageFile, picName + JPG_SUFFIX);
-//        try {
-//            outputImage.createNewFile();
-//        } catch (IOException e) {
-//            Gog.e(e.toString());
-//        }
-//        //将File对象转换为Uri并启动照相程序
-//        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-//        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-//
-//        // 系统版本大于N的统一用FileProvider处理
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            // 将文件转换成content://Uri的形式
-//            imageUri = FileProvider.getUriForFile(getActivity(),
-//                    BuildConfig.APPLICATION_ID + ".fileprovider", outputImage);
-//            // 申请临时访问权限
-//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
-//                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-//            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-//        } else {
-//            intent.addCategory(Intent.CATEGORY_DEFAULT);
-//            imageUri = Uri.fromFile(outputImage);
-//            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-//        }
-//        startActivityForResult(intent, DISPLAY_PHOTO);
-//    }
+    private void delPic(ImageView view) {
+        FrameLayout parent = (FrameLayout) view.getParent();
+        ImageView img = (ImageView) parent.getChildAt(0);
+        img.setImageDrawable(null);
+        view.setVisibility(View.INVISIBLE);
+        unVisibleView.add(0, parent);
+    }
+
+    /**
+     * 读取特体大图
+     *
+     * @param filename
+     * @return
+     */
+    private MultipartBody.Part getSpecialBodyTypePic(String filename) {
+        File f = new File(PATH + File.separator + AppConstant.FILE_PROVIDER_NAME + File.separator + filename + JPG_SUFFIX);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), f);
+        return MultipartBody.Part.createFormData("images[]", filename, requestFile);
+    }
+
+    private void capturePic() {
+        Date date = new Date(System.nanoTime());
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            // 计算md5函数
+            md.update(date.toString().getBytes());
+            picName = new BigInteger(1, md.digest()).toString(16);
+        } catch (NoSuchAlgorithmException e) {
+            picName = date.toString();
+        }
+        File storageFile = new File(PATH.getAbsoluteFile() + File.separator + AppConstant.FILE_PROVIDER_NAME);
+        if (!storageFile.isDirectory()) {
+            storageFile.mkdirs();
+        }
+        File outputImage = new File(storageFile, picName + JPG_SUFFIX);
+        imageFile = outputImage;
+        try {
+            outputImage.createNewFile();
+        } catch (IOException e) {
+            LogUtils.loge(e.toString());
+        }
+        //将File对象转换为Uri并启动照相程序
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        // 系统版本大于N的统一用FileProvider处理
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            // 将文件转换成content://Uri的形式
+            imageUri = FileProvider.getUriForFile(this,
+                    BuildConfig.APPLICATION_ID + ".fileprovider", outputImage);
+            // 申请临时访问权限
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        } else {
+            intent.addCategory(Intent.CATEGORY_DEFAULT);
+            imageUri = Uri.fromFile(outputImage);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        }
+        startActivityForResult(intent, TAKE_PHOTO);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case TAKE_PHOTO:
+                //广播刷新相册
+                Intent intentBc1 = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                intentBc1.setData(imageUri);
+                this.sendBroadcast(intentBc1);
+
+                Bitmap bitmap = BitmapUtils.decodeUri(this, imageUri, 800, 800);
+//                Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+//                img1.setImageBitmap(bitmap);
+                FrameLayout frameLayout = unVisibleView.get(0);
+                ImageView imageView = (ImageView) frameLayout.getChildAt(0);
+                if (bitmap != null) {
+                    imageView.setImageBitmap(bitmap);
+                    frameLayout.getChildAt(1).setVisibility(View.VISIBLE);
+                    unVisibleView.remove(0);
+                    if (!TextUtils.isEmpty(picName)) {
+                        imageView.setTag(picName);
+                    }
+                } else {
+                    ToastUtil.showShort("拍照失败！");
+                }
+                break;
+            default:
+                break;
+
+        }
+    }
 
     private void switchGender() {
         String gender = userGender.getText().toString();
@@ -333,6 +451,11 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
         } else {
             ToastUtil.showShort("请先配对蓝牙设备！");
         }
+
+        unVisibleView.clear();
+        unVisibleView.add(frame1);
+        unVisibleView.add(frame2);
+        unVisibleView.add(frame3);
     }
 
     private void initSpeech() {

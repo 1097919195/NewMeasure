@@ -30,6 +30,7 @@ import com.example.gxkj.newmeasure.app.AppApplication;
 import com.example.gxkj.newmeasure.app.AppConstant;
 import com.example.gxkj.newmeasure.bean.BleDevice;
 import com.example.gxkj.newmeasure.bean.ContractNumWithPartsData;
+import com.example.gxkj.newmeasure.bean.HttpResponse;
 import com.example.gxkj.newmeasure.bean.MeasureCustomer;
 import com.example.gxkj.newmeasure.bean.MeasureWeChat;
 import com.example.gxkj.newmeasure.bean.UserData;
@@ -391,12 +392,10 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                         .show();
 //                drawerLayout.closeDrawers();
                 break;
-//            case R.id.nav_account:
-//                drawerLayout.closeDrawers();
-//                Intent pwdIntent = new Intent(this, UserActivity.class);
-//                pwdIntent.putExtra("support_type", Constant.USER_PWD);
-//                startActivity(pwdIntent);
-//                break;
+            case R.id.nav_account:
+                Intent pwdIntent = new Intent(this, ManagePassWordActicity.class);
+                startActivity(pwdIntent);
+                break;
 //            case R.id.nav_feedback:
 //                drawerLayout.closeDrawers();
 //                Intent feedbackIntent = new Intent(this, UserActivity.class);
@@ -487,7 +486,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         LogUtils.loge(String.valueOf(partsArrayList.size()));
     }
 
-    //根据合同号来获取对应的量体部位
+    //根据合同号获取的合同成员信息
     @Override
     public void returnMeasureCustomerData(MeasureCustomer measureCustomer,String tid) {
         if (partsArrayList != null) {
@@ -498,6 +497,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         }
     }
 
+    //根据合同号获取的微信用户信息
     @Override
     public void returnMeasureWeChatData(MeasureWeChat measureWeChat) {
 //        if (SPUtils.getSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_NUM).equals("default")) {
@@ -513,7 +513,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         }
 
     }
-
 
     @Override
     public void showLoading(String title) {
