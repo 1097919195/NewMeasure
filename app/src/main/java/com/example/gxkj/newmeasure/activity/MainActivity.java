@@ -36,6 +36,7 @@ import com.example.gxkj.newmeasure.bean.MeasureWeChat;
 import com.example.gxkj.newmeasure.bean.UserData;
 import com.example.gxkj.newmeasure.camera.CaptureActivity;
 import com.jaydenxiao.common.base.BaseActivity;
+import com.jaydenxiao.common.baseapp.AppManager;
 import com.jaydenxiao.common.baserx.RxBus2;
 import com.jaydenxiao.common.commonutils.LogUtils;
 import com.jaydenxiao.common.commonutils.SPUtils;
@@ -321,24 +322,27 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-//            case R.id.nav_logout:
-//                new MaterialDialog.Builder(this)
-//                        .title("确定要退出登录？")
-//                        .titleColor(getResources().getColor(R.color.ff5001))
-//                        .positiveText(R.string.sure)
-//                        .negativeText(R.string.cancel)
-//                        .backgroundColor(getResources().getColor(R.color.white))
-//                        .onPositive((dialog, which) -> {
-//                            drawerLayout.closeDrawers();
-//                            dialog.dismiss();
-//                            homePresenter.logout();
-//                        })
-//                        .show();
-//                break;
-//            case R.id.nav_instruction:
+            case R.id.nav_logout:
+                new MaterialDialog.Builder(this)
+                        .title("确定要退出登录？")
+                        .titleColor(getResources().getColor(R.color.ff5001))
+                        .positiveText(R.string.sure)
+                        .negativeText(R.string.cancel)
+                        .backgroundColor(getResources().getColor(R.color.white))
+                        .onPositive((dialog, which) -> {
+                            drawerLayout.closeDrawers();
+                            dialog.dismiss();
+                            SPUtils.setSharedStringData(AppApplication.getAppContext(),AppConstant.LOGIN_TOKEN,"");
+                            AppManager.getAppManager().finishAllActivity();
+                            Intent intent = new Intent(MainActivity.this, AccountActivity.class);
+                            startActivity(intent);
+                        })
+                        .show();
+                break;
+            case R.id.nav_instruction:
 //                drawerLayout.closeDrawers();
-//                Toast.makeText(this, "使用说明开发中", Toast.LENGTH_SHORT).show();
-//                break;
+                ToastUtil.showShort("说明文档开发中");
+                break;
             case R.id.nav_device:
                 String macAddress = SPUtils.getSharedStringData(AppApplication.getAppContext(), AppConstant.MAC_ADDRESS);
                 if (TextUtils.isEmpty(macAddress)) {
@@ -390,7 +394,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                                 }
                         )
                         .show();
-//                drawerLayout.closeDrawers();
                 break;
             case R.id.nav_account:
                 Intent pwdIntent = new Intent(this, ManagePassWordActicity.class);
@@ -528,11 +531,20 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
     @Override
     public void showErrorTip(String msg) {
-        ToastUtil.showShort(msg);
         //蓝牙连接失败
         if (msg == "connectFail") {
             cirProgressBarWithChoose.dismiss();
         }
+        //用户信息的token过期时
+        if (msg == "Unauthenticated.") {
+            SPUtils.setSharedStringData(AppApplication.getAppContext(),AppConstant.LOGIN_TOKEN,"");
+            AppManager.getAppManager().finishAllActivity();
+            Intent intent = new Intent(MainActivity.this, AccountActivity.class);
+            startActivity(intent);
+            ToastUtil.showShort("用户信息已经过期,请重新登录");
+            return;
+        }
+        ToastUtil.showShort(msg);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.gxkj.newmeasure.activity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.widget.Toolbar;
 import android.widget.Button;
@@ -9,10 +10,14 @@ import com.example.gxkj.newmeasure.Contract.ManageContract;
 import com.example.gxkj.newmeasure.Model.ManageModel;
 import com.example.gxkj.newmeasure.Presenter.ManagePresenter;
 import com.example.gxkj.newmeasure.R;
+import com.example.gxkj.newmeasure.app.AppApplication;
+import com.example.gxkj.newmeasure.app.AppConstant;
 import com.example.gxkj.newmeasure.bean.HttpResponse;
 
 import com.jaydenxiao.common.base.BaseActivity;
+import com.jaydenxiao.common.baseapp.AppManager;
 import com.jaydenxiao.common.commonutils.LogUtils;
+import com.jaydenxiao.common.commonutils.SPUtils;
 import com.jaydenxiao.common.commonutils.ToastUtil;
 
 
@@ -78,8 +83,13 @@ public class ManagePassWordActicity extends BaseActivity<ManagePresenter, Manage
 
     //修改密码成功
     @Override
-    public void returnChangePassword(HttpResponse s) {
+    public void returnChangePassword(HttpResponse s,String new_password) {
+        SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.USERINFO_PASS, new_password);
+        SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.LOGIN_TOKEN, "");//改变token为空
         ToastUtil.showShort("修改密码成功,请重新登录");
+        AppManager.getAppManager().finishAllActivity();
+        Intent intent = new Intent(ManagePassWordActicity.this, AccountActivity.class);
+        startActivity(intent);
     }
 
     @Override

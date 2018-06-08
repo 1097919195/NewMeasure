@@ -18,7 +18,7 @@ public interface ManageContract {
     }
 
     interface View extends BaseView {
-        void returnChangePassword(HttpResponse s);
+        void returnChangePassword(HttpResponse s, String password);
     }
 
     abstract class Presenter extends BasePresenter<View, Model> {

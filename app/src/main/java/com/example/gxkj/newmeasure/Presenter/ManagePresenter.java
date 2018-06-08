@@ -14,7 +14,7 @@ public class ManagePresenter extends ManageContract.Presenter {
         mRxManage.add(mModel.ChangePassword(old_password,new_password).subscribeWith(new RxSubscriber<HttpResponse>(mContext, true) {
             @Override
             protected void _onNext(HttpResponse s) {
-                mView.returnChangePassword(s);
+                mView.returnChangePassword(s, new_password);
             }
 
             @Override
