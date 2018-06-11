@@ -6,6 +6,7 @@ import com.example.gxkj.newmeasure.BuildConfig;
 import com.jaydenxiao.common.baseapp.BaseApplication;
 import com.jaydenxiao.common.commonutils.LogUtils;
 import com.polidea.rxandroidble2.RxBleClient;
+import com.squareup.leakcanary.LeakCanary;
 
 import io.reactivex.plugins.RxJavaPlugins;
 
@@ -22,6 +23,13 @@ public class AppApplication extends BaseApplication {
         LogUtils.logInit(BuildConfig.LOG_DEBUG);
         rxBleClient = RxBleClient.create(this);
         setRxJavaErrorHandler();
+
+//        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            // This process is dedicated to LeakCanary for heap analysis.
+//            // You should not init your app in this process.
+//            return;
+//        }
+//        LeakCanary.install(this);
     }
 
     public static RxBleClient getRxBleClient(Context context) {

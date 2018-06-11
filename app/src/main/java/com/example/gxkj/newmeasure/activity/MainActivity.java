@@ -36,6 +36,7 @@ import com.example.gxkj.newmeasure.bean.MeasureWeChat;
 import com.example.gxkj.newmeasure.bean.UserData;
 import com.example.gxkj.newmeasure.camera.CaptureActivity;
 import com.jaydenxiao.common.base.BaseActivity;
+import com.jaydenxiao.common.baseapp.AppConfig;
 import com.jaydenxiao.common.baseapp.AppManager;
 import com.jaydenxiao.common.baserx.RxBus2;
 import com.jaydenxiao.common.commonutils.LogUtils;
@@ -52,6 +53,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.BindView;
+import cn.hugeterry.updatefun.UpdateFunGO;
+import cn.hugeterry.updatefun.config.UpdateKey;
 import io.reactivex.functions.Consumer;
 
 public class MainActivity extends BaseActivity<MainPresenter, MainModel> implements MainContract.View, NavigationView.OnNavigationItemSelectedListener {
@@ -92,6 +95,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     @Override
     protected void onResume() {
         super.onResume();
+        UpdateFunGO.onResume(this);
         mPresenter.getUserDataRequset();
     }
 
@@ -119,6 +123,13 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         initListener();
         initDrawerMenuContent();
         initRxBus2FindBle();
+
+        //此处填上在http://fir.im/注册账号后获得的API_TOKEN以及APP的应用ID
+        UpdateKey.API_TOKEN = AppConfig.API_FIRE_TOKEN;
+        UpdateKey.APP_ID = AppConfig.APP_FIRE_ID;
+        //如果你想通过Dialog来进行下载，可以如下设置
+        UpdateKey.DialogOrNotification = UpdateKey.WITH_DIALOG;
+        UpdateFunGO.init(this);//Android的自动更新库
     }
 
     private void initListener() {
@@ -132,11 +143,10 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
-            Bundle bundle = data.getExtras();
-            String result = bundle.getString("result");
-            LogUtils.loge("二维码解析====" + result);
-
             if (requestCode == REQUEST_CODE_CONTRACT) {
+                Bundle bundle = data.getExtras();
+                String result = bundle.getString("result");
+                LogUtils.loge("二维码解析====" + result);
                 switch (resultCode) {
                     case SCAN_HINT:
                         if (result != null) {
@@ -150,6 +160,9 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                         break;
                 }
             } else if (requestCode == REQUEST_CODE_MEASURE) {
+                Bundle bundle = data.getExtras();
+                String result = bundle.getString("result");
+                LogUtils.loge("二维码解析====" + result);
                 switch (resultCode) {
                     case SCAN_HINT:
                         if (result != null) {
@@ -340,7 +353,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                         .show();
                 break;
             case R.id.nav_instruction:
-//                drawerLayout.closeDrawers();
                 ToastUtil.showShort("说明文档开发中");
                 break;
             case R.id.nav_device:
@@ -360,7 +372,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                             .show();
                 }
                 break;
-//            case R.id.nav_offset_setting:
+            case R.id.nav_offset_setting:
 //                new MaterialDialog.Builder(this)
 //                        .content(R.string.input_offset)
 //                        .inputType(InputType.TYPE_CLASS_NUMBER)
@@ -375,8 +387,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 //                            }
 //                            instance.setMeasureOffset(v);
 //                        }).show();
-//                drawerLayout.closeDrawers();
-//                break;
+                ToastUtil.showShort("已经设置默认偏移量1.4cm");
+                break;
             case R.id.nav_contract:
                 new MaterialDialog.Builder(this)
                         .backgroundColor(getResources().getColor(R.color.white))
@@ -399,22 +411,17 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                 Intent pwdIntent = new Intent(this, ManagePassWordActicity.class);
                 startActivity(pwdIntent);
                 break;
-//            case R.id.nav_feedback:
-//                drawerLayout.closeDrawers();
-//                Intent feedbackIntent = new Intent(this, UserActivity.class);
-//                feedbackIntent.putExtra("support_type", Constant.USER_FEEDBACK);
-//                startActivity(feedbackIntent);
-//                break;
-//            case R.id.nav_link:
-//                drawerLayout.closeDrawers();
-//                Intent contactIntent = new Intent(this, UserActivity.class);
-//                contactIntent.putExtra("support_type", Constant.USER_CONTACT);
-//                startActivity(contactIntent);
-//                break;
-//            case R.id.nav_version:
-//                drawerLayout.closeDrawers();
-//                homePresenter.manuallyGetLatestVersion();
-//                break;
+            case R.id.nav_feedback:
+                ToastUtil.showShort("暂不支持反馈");
+                break;
+            case R.id.nav_link:
+                Intent contactIntent = new Intent(this, ContactActivity.class);
+                startActivity(contactIntent);
+                break;
+            case R.id.nav_version:
+                drawerLayout.closeDrawers();
+                UpdateFunGO.manualStart(this);
+                break;
             default:
                 break;
         }
@@ -545,6 +552,12 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
             return;
         }
         ToastUtil.showShort(msg);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        UpdateFunGO.onStop(this);
     }
 
     @Override

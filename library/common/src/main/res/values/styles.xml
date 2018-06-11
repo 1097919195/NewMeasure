@@ -13,7 +13,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/night_one_text_color</item>
+        <item name="colorAccent">#ff009688</item>
 
         <item name="dayNightBackground">@color/day_backgroup_color</item>
         <item name="dayNightOneTextColor">@color/day_one_text_color</item>
@@ -30,7 +30,7 @@
     <style name="DayTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/night_one_text_color</item>
+        <item name="colorAccent">#ff009688</item>
 
         <item name="dayNightBackground">@color/day_backgroup_color</item>
         <item name="dayNightOneTextColor">@color/day_one_text_color</item>

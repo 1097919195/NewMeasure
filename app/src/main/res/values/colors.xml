@@ -69,5 +69,6 @@
     <color name="textColorPrimary">#616161</color>
     <color name="gray">#9cffffff</color>
     <color name="item_selector">#dcf2f7</color>
+    <color name="color_accent">#ff009688</color>
     <!--QRCode scanner color end-->
 </resources>

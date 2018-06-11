@@ -34,9 +34,9 @@ public class AppConfig {
 
    /* 自动更新配置*/
     //fire.im的token
-    public static  String API_FIRE_TOKEN = "a4f8aa03dc120fc81fcc96464fd03a4b";
+    public static  String API_FIRE_TOKEN = "2995fce3757f7bacc823a3ac97eec653";
     //fire.im的应用id
-    public static  String APP_FIRE_ID = "57e8ccd4ca87a851e4001199";
+    public static  String APP_FIRE_ID = "5b1e234eca87a808d9876231";
 
 
     //appid 微信分配的公众账号ID
