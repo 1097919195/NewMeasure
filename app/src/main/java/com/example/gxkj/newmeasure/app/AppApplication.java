@@ -3,6 +3,7 @@ package com.example.gxkj.newmeasure.app;
 import android.content.Context;
 
 import com.example.gxkj.newmeasure.BuildConfig;
+import com.facebook.stetho.Stetho;
 import com.jaydenxiao.common.baseapp.BaseApplication;
 import com.jaydenxiao.common.commonutils.LogUtils;
 import com.polidea.rxandroidble2.RxBleClient;
@@ -30,6 +31,8 @@ public class AppApplication extends BaseApplication {
 //            return;
 //        }
 //        LeakCanary.install(this);
+
+        Stetho.initializeWithDefaults(this);//浏览器抓包
     }
 
     public static RxBleClient getRxBleClient(Context context) {

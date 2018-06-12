@@ -12,6 +12,7 @@ import com.example.gxkj.newmeasure.app.AppConstant;
 import com.example.gxkj.newmeasure.bean.HttpResponse;
 import com.example.gxkj.newmeasure.utils.exception.ApiException;
 import com.example.gxkj.newmeasure.utils.exception.TimeoutException;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jaydenxiao.common.baseapp.BaseApplication;
@@ -118,6 +119,7 @@ public class Api {
 
         //设置OkHttpClient客户端（在trofit自己是不支持缓存的。要做缓存用的是okhttp的功能，主要利用的是拦截器。这里一定要看清楚okhtt添加拦截器有两种。addNetworkInterceptor添加的是网络拦截器，他会在在request和resposne是分别被调用一次，addinterceptor添加的是application拦截器，他只会在response被调用一次）
         okHttpClient = new OkHttpClient.Builder()
+                .addNetworkInterceptor(new StethoInterceptor())//浏览器抓包
                 .readTimeout(READ_TIME_OUT, TimeUnit.MILLISECONDS)
                 .connectTimeout(CONNECT_TIME_OUT, TimeUnit.MILLISECONDS)
                 .addInterceptor(mRewriteCacheControlInterceptor)
