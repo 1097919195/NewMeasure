@@ -15,7 +15,7 @@ import io.reactivex.Observable;
 public class ManageModel implements ManageContract.Model {
     @Override
     public Observable<HttpResponse> ChangePassword(String old_password, String new_password) {
-        return Api.getDefault(HostType.QUALITY_DATA_TEST)
+        return Api.getDefault(HostType.QUALITY_DATA)
                 .changePassword(old_password,new_password)
                 .compose(RxSchedulers.io_main());
     }

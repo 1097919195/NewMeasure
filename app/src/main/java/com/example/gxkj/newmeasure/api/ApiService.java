@@ -96,13 +96,13 @@ public interface ApiService {
 //            @Field("list") Object[][] qualityDataList
 //    );
 
-    //客户端修改密码
-    @FormUrlEncoded
-    @POST("api/change/password")
-    Observable<HttpResponse> changePassword(
-            @Field("old_password") String old_password,
-            @Field("new_password") String new_password
-    );
+//    //客户端修改密码
+//    @FormUrlEncoded
+//    @POST("api/change/password")
+//    Observable<HttpResponse> changePassword(
+//            @Field("old_password") String old_password,
+//            @Field("new_password") String new_password
+//    );
 
     /**
      * Release Api
@@ -187,13 +187,13 @@ public interface ApiService {
             @Query("contract_id") String contract_id
     );
 
-//    //客户端修改密码
-//    @FormUrlEncoded
-//    @POST("api/client/reset")
-//    Observable<HttpResponse> changePassword(
-//            @Field("old_password") String old_password,
-//            @Field("new_password") String new_password
-//    );
+    //客户端修改密码
+    @FormUrlEncoded
+    @POST("api/client/reset")
+    Observable<HttpResponse> changePassword(
+            @Field("old_password") String old_password,
+            @Field("new_password") String new_password
+    );
 
 
 }
