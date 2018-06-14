@@ -184,7 +184,8 @@ public interface ApiService {
             @Part("sex") int sex,
             @Part MultipartBody.Part[] images,
             @Query("data") String data,
-            @Query("contract_id") String contract_id
+            @Query("contract_id") String contract_id,
+            @Query("address") String address
     );
 
     //客户端修改密码

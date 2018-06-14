@@ -29,6 +29,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="zpt2H19IGNvrNcyE3IoSueQjeaG17jjS" >
+        </meta-data>
+        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"> </service>
+
         <activity android:name=".activity.SplashActivity"
             android:theme="@style/AppWelcome"
             >

@@ -26,7 +26,7 @@ public class MeasurePresenter extends MeasureContract.Presenter{
     @Override
     public void startMeasureRequest(UUID characteristicUUID) {
         mRxManage.add(mModel.startMeasure(characteristicUUID)
-                .throttleFirst(MEASURE_DURATION, TimeUnit.MILLISECONDS)
+//                .throttleFirst(MEASURE_DURATION, TimeUnit.MILLISECONDS)
                 .subscribeWith(new RxSubscriber<byte[]>(mContext,false) {
                     @Override
                     protected void _onNext(byte[] bytes) {
@@ -76,8 +76,8 @@ public class MeasurePresenter extends MeasureContract.Presenter{
 //    }
 
     @Override
-    public void upLoadMeasureResultRequset(String tid, String openID, int sex, MultipartBody.Part[] images, MultipartBeanWithUserData data, String contract_id) {
-        mRxManage.add(mModel.upLoadMeasureResult(tid, openID, sex, images, data, contract_id).subscribeWith(new RxSubscriber<HttpResponse>(mContext, true) {
+    public void upLoadMeasureResultRequset(String tid, String openID, int sex, MultipartBody.Part[] images, MultipartBeanWithUserData data, String contract_id, String address) {
+        mRxManage.add(mModel.upLoadMeasureResult(tid, openID, sex, images, data, contract_id, address).subscribeWith(new RxSubscriber<HttpResponse>(mContext, true) {
             @Override
             protected void _onNext(HttpResponse httpResponse) {
                 mView.returnUpLoadMeasureResult(httpResponse);

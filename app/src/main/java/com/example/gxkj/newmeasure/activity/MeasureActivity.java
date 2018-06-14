@@ -30,6 +30,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.aspsine.irecyclerview.universaladapter.ViewHolderHelper;
 import com.aspsine.irecyclerview.universaladapter.recyclerview.CommonRecycleViewAdapter;
 import com.aspsine.irecyclerview.universaladapter.recyclerview.OnItemClickListener;
+import com.baidu.location.BDLocation;
 import com.example.gxkj.newmeasure.BuildConfig;
 import com.example.gxkj.newmeasure.Contract.MeasureContract;
 import com.example.gxkj.newmeasure.Model.MeasureModel;
@@ -141,6 +142,9 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
     private String picName;
     MenuItem batteryItem;
 
+    BDLocation location;
+    String address;
+
 
     public static void startAction(Activity activity, ArrayList<ContractNumWithPartsData.Parts> partsArrayList, String UserPhoto, String UserName, int gender, int signTidOrOpenID, String tidOrOpenID, String contractID) {
         Intent intent = new Intent(activity, MeasureActivity.class);
@@ -176,6 +180,8 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
         initMeasure();
         initListener();
         itemClickRemeasure();
+
+        AppApplication.getmLocationClient().start();
     }
 
     private void initRxBus() {
@@ -301,9 +307,16 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
 //                                Map<List<String>, List<Float>> dataMap = new HashMap<List<String>, List<Float>>();
 //                                dataMap.put(parts, measureValue);
 
+                                //获取地址
+                                location = AppApplication.getmLocationClient().getLastKnownLocation();//放在start后面，防止还没有获取到BDLocation的情况
+                                if (location != null) {
+                                    address = location.getAddrStr();
+                                    LogUtils.loge("当前量体所处位置：" + address);
+                                }
+
 
                                 //发送保存测量结果请求
-                                mPresenter.upLoadMeasureResultRequset(tid, openID, sex, images, multipartData, contractID);
+                                mPresenter.upLoadMeasureResultRequset(tid, openID, sex, images, multipartData, contractID, address);
                             } else {
                                 ToastUtil.showShort("请先测完所有部位在进行保存！");
                             }
