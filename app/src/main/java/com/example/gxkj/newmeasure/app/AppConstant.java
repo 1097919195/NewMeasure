@@ -31,6 +31,8 @@ public class AppConstant {
     public static final String DISPLAY_BIG_PART = "DISPLAY_BIG_PART";
 
     public static final String FILE_PROVIDER_NAME = "gtImage";
+    public static String LOCATION_ADDRESS = "LOCATION_ADDRESS";
+    public static final String IS_FIRST_RUN = "IS_FIRST_RUN";
 
 
 }

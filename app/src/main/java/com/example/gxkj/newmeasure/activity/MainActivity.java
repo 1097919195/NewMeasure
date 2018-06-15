@@ -6,7 +6,9 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aspsine.irecyclerview.universaladapter.ViewHolderHelper;
 import com.aspsine.irecyclerview.universaladapter.recyclerview.CommonRecycleViewAdapter;
+import com.baidu.location.BDLocation;
 import com.example.gxkj.newmeasure.Contract.MainContract;
 import com.example.gxkj.newmeasure.Model.MainModel;
 import com.example.gxkj.newmeasure.Presenter.MainPresenter;
@@ -82,8 +85,9 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     public static final int REQUEST_CODE_MEASURE = 1202;
     private static final int SCAN_HINT = 1001;
     private static final int CODE_HINT = 1002;
-    ArrayList<ContractNumWithPartsData.Parts> partsArrayList = new ArrayList<>();
-    String contractID;
+    private ArrayList<ContractNumWithPartsData.Parts> partsArrayList = new ArrayList<>();
+    private String contractID;
+    private BDLocation location;
 
 
     public static void startAction(Activity activity) {
@@ -137,6 +141,16 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
             Intent intent = new Intent(MainActivity.this, CaptureActivity.class);
             startActivityForResult(intent, REQUEST_CODE_MEASURE);
         });
+
+        location = AppApplication.getmLocationClient().getLastKnownLocation();//放在start后面，防止还没有获取到BDLocation的情况
+        if (location != null) {
+            AppConstant.LOCATION_ADDRESS = location.getAddrStr();
+            if (AppConstant.LOCATION_ADDRESS == null) {
+                AppConstant.LOCATION_ADDRESS = "定位失败";
+            }else {
+                LogUtils.loge("用户登陆的位置信息：" + AppConstant.LOCATION_ADDRESS);
+            }
+        }
     }
 
     @Override
@@ -237,22 +251,27 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
             rxPermissions.requestEach(Manifest.permission.ACCESS_COARSE_LOCATION)
                     .subscribe(permission -> { // will emit 2 Permission objects
                         if (permission.granted) {
-                            // FIXME: 2018/4/10 0010 需检测当前位置有没有开启
-                            cirProgressBarWithScan.show();
-                            Timer timer = new Timer();
-                            timer = new Timer(true);
-                            timer.schedule(new TimerTask() {
-                                @Override
-                                public void run() {
-                                    if (cirProgressBarWithScan.isShowing()) {
-                                        cirProgressBarWithScan.dismiss();
-                                        RxBus2.getInstance().post(AppConstant.NO_BLE_FIND, true);
+
+                            if (isLocationEnabled()) {
+                                cirProgressBarWithScan.show();
+                                Timer timer = new Timer();
+                                timer = new Timer(true);
+                                timer.schedule(new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        if (cirProgressBarWithScan.isShowing()) {
+                                            cirProgressBarWithScan.dismiss();
+                                            RxBus2.getInstance().post(AppConstant.NO_BLE_FIND, true);
+                                        }
                                     }
-                                }
-                            }, 6000);
-                            rxBleDeviceAddressList.clear();
-                            bleDeviceList.clear();
-                            mPresenter.getBleDeviceDataRequest();
+                                }, 6000);
+                                rxBleDeviceAddressList.clear();
+                                bleDeviceList.clear();
+                                mPresenter.getBleDeviceDataRequest();
+                            }else {
+                                ToastUtil.showShort("需要开启位置信息才能支持蓝牙搜索");
+                            }
+
 
                         } else if (permission.shouldShowRequestPermissionRationale) {
                             // Denied permission without ask never again
@@ -262,6 +281,23 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                             ToastUtil.showShort("未授予位置信息权限");
                         }
                     });
+        }
+    }
+
+    public boolean isLocationEnabled() {
+        int locationMode = 0;
+        String locationProviders;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            try {
+                locationMode = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+                return false;
+            }
+            return locationMode != Settings.Secure.LOCATION_MODE_OFF;
+        } else {
+            locationProviders = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+            return !TextUtils.isEmpty(locationProviders);
         }
     }
 

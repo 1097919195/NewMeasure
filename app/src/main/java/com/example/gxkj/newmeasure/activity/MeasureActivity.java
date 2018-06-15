@@ -311,12 +311,16 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
                                 location = AppApplication.getmLocationClient().getLastKnownLocation();//放在start后面，防止还没有获取到BDLocation的情况
                                 if (location != null) {
                                     address = location.getAddrStr();
-                                    LogUtils.loge("当前量体所处位置：" + address);
+                                    if (address != null) {
+                                        AppConstant.LOCATION_ADDRESS = address;
+                                        LogUtils.loge("当前定位信息：" + address);
+                                    } else {
+                                        LogUtils.loge("定位失败,上传上一次获取的定位信息");
+                                    }
                                 }
 
-
                                 //发送保存测量结果请求
-                                mPresenter.upLoadMeasureResultRequset(tid, openID, sex, images, multipartData, contractID, address);
+                                mPresenter.upLoadMeasureResultRequset(tid, openID, sex, images, multipartData, contractID, AppConstant.LOCATION_ADDRESS);
                             } else {
                                 ToastUtil.showShort("请先测完所有部位在进行保存！");
                             }

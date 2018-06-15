@@ -69,7 +69,6 @@ public class AppApplication extends BaseApplication {
             String district = location.getDistrict();    //获取区县
             String street = location.getStreet();    //获取街道信息
 
-            ToastUtil.showShort(addr);
             LogUtils.loge("所在位置："+addr+"    "+"经度："+String.valueOf(latitude)+"    "+"纬度："+String.valueOf(longitude));
             mLocationClient.stop();
         });

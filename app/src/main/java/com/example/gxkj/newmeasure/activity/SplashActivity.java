@@ -33,6 +33,7 @@ public class SplashActivity extends BaseActivity {
         String token = SPUtils.getSharedStringData(AppApplication.getAppContext(), AppConstant.LOGIN_TOKEN);
         Handler handler = new Handler();
         if (!TextUtils.isEmpty(token)) {
+            AppApplication.getmLocationClient().start();//获取当前位置信息
             handler.postDelayed(this::goToMain, 500);
         } else {
             handler.postDelayed(this::goToSignIn, 500);
