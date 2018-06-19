@@ -278,7 +278,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                         } else {
                             // Denied permission with ask never again
                             // Need to go to the settings
-                            ToastUtil.showShort("未授予位置信息权限");
+                            ToastUtil.showShort("未授予位置信息权限,请手动开启");
                         }
                     });
         }

@@ -1,6 +1,9 @@
 package com.example.gxkj.newmeasure.activity;
 
 import android.Manifest;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.widget.Button;
@@ -8,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.gxkj.newmeasure.Contract.LoginContract;
 import com.example.gxkj.newmeasure.Model.LoginModel;
 import com.example.gxkj.newmeasure.Presenter.LoginPresenter;
@@ -20,6 +24,7 @@ import com.jaydenxiao.common.commonutils.LogUtils;
 import com.jaydenxiao.common.commonutils.PermissionUtils;
 import com.jaydenxiao.common.commonutils.SPUtils;
 import com.jaydenxiao.common.commonutils.ToastUtil;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import butterknife.BindView;
 
@@ -44,7 +49,7 @@ public class AccountActivity extends BaseActivity<LoginPresenter, LoginModel> im
     private boolean diaplayPassword = false;
 
     private boolean isFirstRun = SPUtils.getSharedBooleanData(AppApplication.getAppContext(),AppConstant.IS_FIRST_RUN);
-    String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.CAMERA,Manifest.permission.READ_PHONE_STATE};
+    String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA,Manifest.permission.READ_PHONE_STATE};
     private static final int permissionCode = 1;
 
 
@@ -87,7 +92,7 @@ public class AccountActivity extends BaseActivity<LoginPresenter, LoginModel> im
     }
 
     private void initListener() {
-        AppApplication.getmLocationClient().start();//获取当前位置信息
+        checkPremissionLocation();
         
         action_signin.setOnClickListener(v -> {
             username = input_name.getEditableText().toString();
@@ -111,6 +116,37 @@ public class AccountActivity extends BaseActivity<LoginPresenter, LoginModel> im
                 diaplayPassword = true;
             }
         });
+    }
+
+    private void checkPremissionLocation() {
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions.requestEach(Manifest.permission.ACCESS_COARSE_LOCATION)
+                .subscribe(permission -> { // will emit 2 Permission objects
+                    if (permission.granted) {
+                        AppApplication.getmLocationClient().start();//获取当前位置信息
+                    } else if (permission.shouldShowRequestPermissionRationale) {
+                        // Denied permission without ask never again
+                        ToastUtil.showShort("您拒绝了位置信息权限，会导致定位上传失败");
+                    } else {
+                        // Denied permission with ask never again
+                        // Need to go to the settings
+                        ToastUtil.showShort("未授予位置信息权限,请手动开启");
+//                        new MaterialDialog.Builder(this)
+//                                .content("未授予位置信息权限,去手动开启")
+//                                .positiveText("确认")
+//                                .negativeText("取消")
+//                                .backgroundColor(getResources().getColor(R.color.white))
+//                                .contentColor(getResources().getColor(R.color.primary))
+//                                .onPositive((dialog, which) -> {
+//                                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+//                                    intent.setData(uri);
+//                                    startActivity(intent);
+//                                })
+//                                .show();
+                    }
+                });
     }
 
     @Override

@@ -3,11 +3,4 @@
     <external-path
         name="gt_DCIM"
         path="DCIM/gtImage" />
-    <!--自动更新app-->
-    <external-path
-        name="files_root"
-        path="Android/data/${applicationId}/" />
-    <external-path
-        name="external_storage_root"
-        path="." />
 </paths>
