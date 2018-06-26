@@ -135,9 +135,8 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
     public static final int BATTERY_HIGH = 80;
     public static final int TAKE_PHOTO = 1222;
     // 保存图片的文件
-    private File imageFile;
     private Uri imageUri;
-    public static final File PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+    public static final File PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);//获得外部存储器的第一层的文件对象
     public static final String JPG_SUFFIX = ".jpg";
     private String picName;
     MenuItem batteryItem;
@@ -363,13 +362,12 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
             picName = date.toString();
         }
         File storageFile = new File(PATH.getAbsoluteFile() + File.separator + AppConstant.FILE_PROVIDER_NAME);
-        if (!storageFile.isDirectory()) {
+        if (!storageFile.isDirectory()) {//创建目录
             storageFile.mkdirs();
         }
         File outputImage = new File(storageFile, picName + JPG_SUFFIX);
-        imageFile = outputImage;
         try {
-            outputImage.createNewFile();
+            outputImage.createNewFile();//createNewFile()是创建一个不存在的文件。
         } catch (IOException e) {
             LogUtils.loge(e.toString());
         }
@@ -399,14 +397,12 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case TAKE_PHOTO:
-                //广播刷新相册
+                //扫描指定文件(通知系统刷新相册)
                 Intent intentBc1 = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 intentBc1.setData(imageUri);
                 this.sendBroadcast(intentBc1);
 
                 Bitmap bitmap = BitmapUtils.decodeUri(this, imageUri, 800, 800);
-//                Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-//                img1.setImageBitmap(bitmap);
                 FrameLayout frameLayout = unVisibleView.get(0);
                 ImageView imageView = (ImageView) frameLayout.getChildAt(0);
                 if (bitmap != null) {
@@ -415,6 +411,7 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
                     unVisibleView.remove(0);
                     if (!TextUtils.isEmpty(picName)) {
                         imageView.setTag(picName);
+                        LogUtils.loge("imageTag=="+imageView.getTag());
                     }
                 } else {
                     ToastUtil.showShort("拍照失败！");
