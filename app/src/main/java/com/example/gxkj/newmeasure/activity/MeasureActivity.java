@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.aspsine.irecyclerview.IRecyclerView;
 import com.aspsine.irecyclerview.universaladapter.ViewHolderHelper;
 import com.aspsine.irecyclerview.universaladapter.recyclerview.CommonRecycleViewAdapter;
 import com.aspsine.irecyclerview.universaladapter.recyclerview.OnItemClickListener;
@@ -85,7 +86,7 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.rcy_measureData)
-    RecyclerView rcy;
+    IRecyclerView rcy;
     @BindView(R.id.wechat_icon)
     ImageView wechat_icon;
     @BindView(R.id.wechat_nickname)
@@ -94,25 +95,20 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
     LinearLayout genderLine;
     @BindView(R.id.wechat_gender)
     TextView userGender;
-    @BindView(R.id.camera_add)
-    RelativeLayout camera_add;
     @BindView(R.id.save_measure_result)
     Button save_measure_result;
     @BindView(R.id.unmeasured_item_hint)
     TextView unmeasured_item_hint;
 
-    @BindView(R.id.frame_1)
     FrameLayout frame1;
-    @BindView(R.id.frame_2)
     FrameLayout frame2;
-    @BindView(R.id.frame_3)
     FrameLayout frame3;
-    @BindView(R.id.img_1)
     ImageView img1;
-    @BindView(R.id.img_2)
     ImageView img2;
-    @BindView(R.id.img_3)
     ImageView img3;
+    ImageView del_1;
+    ImageView del_2;
+    ImageView del_3;
 
     ArrayList<ContractNumWithPartsData.Parts> partsArrayList = new ArrayList<>();
     CommonRecycleViewAdapter<ContractNumWithPartsData.Parts> adapter;
@@ -228,31 +224,14 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
         });
     }
 
-    @OnClick({R.id.del_1, R.id.del_2, R.id.del_3})
-    public void onClick(View v){
-        switch (v.getId()) {
-            case R.id.del_1:
-            case R.id.del_2:
-            case R.id.del_3:
-                delPic((ImageView) v);
-                break;
-            default:
-                break;
-        }
-    }
-
     private void initListener() {
         genderLine.setOnClickListener(v -> {
             switchGender();
         });
 
-        camera_add.setOnClickListener(v -> {
-            if (unVisibleView.size() > 0) {
-                capturePic();
-            } else {
-                ToastUtil.showShort("已拍照三张特体图片");
-            }
-        });
+        del_1.setOnClickListener(v -> delPic((ImageView) v));
+        del_2.setOnClickListener(v -> delPic((ImageView) v));
+        del_3.setOnClickListener(v -> delPic((ImageView) v));
 
         RxView.clicks(save_measure_result)
                 .throttleFirst(2, TimeUnit.SECONDS)
@@ -534,6 +513,30 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
         rcy.setAdapter(adapter);
 //        irc.setLayoutManager(new LinearLayoutManager(this));//默认
         rcy.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+
+        //listview底部跟随一个按钮，适应屏幕
+        View view = View.inflate(this, R.layout.view_measure_photos, null);
+        frame1=view.findViewById(R.id.frame_1);
+        frame2=view.findViewById(R.id.frame_2);
+        frame3=view.findViewById(R.id.frame_3);
+        img1=view.findViewById(R.id.img_1);
+        img2=view.findViewById(R.id.img_2);
+        img3=view.findViewById(R.id.img_3);
+        del_1=view.findViewById(R.id.del_1);
+        del_2=view.findViewById(R.id.del_2);
+        del_3=view.findViewById(R.id.del_3);
+        view.findViewById(R.id.camera_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (unVisibleView.size() > 0) {
+                    capturePic();
+                } else {
+                    ToastUtil.showShort("已拍照三张特体图片");
+                }
+            }
+        });
+        rcy.addFooterView(view);
+
     }
 
     @Override

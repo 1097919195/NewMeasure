@@ -26,7 +26,7 @@ public class MeasurePresenter extends MeasureContract.Presenter{
     @Override
     public void startMeasureRequest(UUID characteristicUUID) {
         mRxManage.add(mModel.startMeasure(characteristicUUID)
-//                .throttleFirst(MEASURE_DURATION, TimeUnit.MILLISECONDS)
+                .throttleFirst(MEASURE_DURATION, TimeUnit.MILLISECONDS)
                 .subscribeWith(new RxSubscriber<byte[]>(mContext,false) {
                     @Override
                     protected void _onNext(byte[] bytes) {
