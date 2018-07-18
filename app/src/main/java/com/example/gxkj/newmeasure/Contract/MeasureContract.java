@@ -26,7 +26,7 @@ public interface MeasureContract {
 
         Observable<RxBleConnection.RxBleConnectionState> checkBleConnectState();
 
-        Observable<HttpResponse> upLoadMeasureResult(String tid, String openID, int sex, MultipartBody.Part[] images, MultipartBeanWithUserData data, String contract_id, String address);
+        Observable<HttpResponse> upLoadMeasureResult(String tid, String openID, int sex, MultipartBody.Part[] images, List<ContractNumWithPartsData.Parts> data, String contract_id, String address);
     }
 
     interface View extends BaseView {
@@ -42,6 +42,6 @@ public interface MeasureContract {
 
         public abstract void checkBleConnectStateRequest();
 
-        public abstract void upLoadMeasureResultRequset(String tid, String openID, int sex, MultipartBody.Part[] images, MultipartBeanWithUserData data, String contract_id, String address);
+        public abstract void upLoadMeasureResultRequset(String tid, String openID, int sex, MultipartBody.Part[] images, List<ContractNumWithPartsData.Parts> data, String contract_id, String address);
     }
 }

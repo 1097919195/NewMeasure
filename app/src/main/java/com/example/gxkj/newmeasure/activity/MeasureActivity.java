@@ -269,7 +269,7 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
                                     images[2] = getSpecialBodyTypePic((String) img3.getTag());
                                 }
 //                                partsData
-                                MultipartBeanWithUserData multipartData = new MultipartBeanWithUserData(partsArrayList);
+                                List<ContractNumWithPartsData.Parts> multipartData = new MultipartBeanWithUserData(partsArrayList).getParts();
 //                                List<String> parts = new ArrayList<>();
 //                                List<Float> measureValue = new ArrayList<>();
 //                                for (ContractNumWithPartsData.Parts partsData : partsArrayList) {

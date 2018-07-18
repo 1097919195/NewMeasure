@@ -55,7 +55,7 @@ public class MeasureModel implements MeasureContract.Model {
 //    }
 
     @Override
-    public Observable<HttpResponse> upLoadMeasureResult(String tid, String openID, int sex, MultipartBody.Part[] images, MultipartBeanWithUserData data, String contract_id, String address) {
+    public Observable<HttpResponse> upLoadMeasureResult(String tid, String openID, int sex, MultipartBody.Part[] images, List<ContractNumWithPartsData.Parts> data, String contract_id, String address) {
         String s = (new Gson()).toJson(data);
         return Api.getDefault(HostType.QUALITY_DATA)
                 .upLoadMeasureResult(tid, openID, sex, images, s, contract_id, address)

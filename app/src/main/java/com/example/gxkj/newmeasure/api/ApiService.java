@@ -176,7 +176,7 @@ public interface ApiService {
     );
 
     //上传量体的数据
-    @Multipart//一定要一个部位空的part参数
+    @Multipart//一定要一个不为空的part参数
     @POST("api/client/measurements")
     Observable<HttpResponse> upLoadMeasureResult(
             @Query("tid") String tid,

@@ -76,7 +76,7 @@ public class MeasurePresenter extends MeasureContract.Presenter{
 //    }
 
     @Override
-    public void upLoadMeasureResultRequset(String tid, String openID, int sex, MultipartBody.Part[] images, MultipartBeanWithUserData data, String contract_id, String address) {
+    public void upLoadMeasureResultRequset(String tid, String openID, int sex, MultipartBody.Part[] images, List<ContractNumWithPartsData.Parts> data, String contract_id, String address) {
         mRxManage.add(mModel.upLoadMeasureResult(tid, openID, sex, images, data, contract_id, address).subscribeWith(new RxSubscriber<HttpResponse>(mContext, true) {
             @Override
             protected void _onNext(HttpResponse httpResponse) {

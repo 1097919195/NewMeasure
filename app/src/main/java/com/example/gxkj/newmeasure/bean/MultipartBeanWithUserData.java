@@ -13,4 +13,11 @@ public class MultipartBeanWithUserData {
 
     private List<ContractNumWithPartsData.Parts> parts;
 
+    public List<ContractNumWithPartsData.Parts> getParts() {
+        return parts;
+    }
+
+    public void setParts(List<ContractNumWithPartsData.Parts> parts) {
+        this.parts = parts;
+    }
 }
