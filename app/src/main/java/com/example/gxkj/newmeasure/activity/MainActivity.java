@@ -579,7 +579,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
             cirProgressBarWithChoose.dismiss();
         }
         //用户信息的token过期时
-        if (msg == "获取用户信息错误") {
+        if (msg == "token过期") {
             SPUtils.setSharedStringData(AppApplication.getAppContext(),AppConstant.LOGIN_TOKEN,"");
             AppManager.getAppManager().finishAllActivity();
             Intent intent = new Intent(MainActivity.this, AccountActivity.class);
