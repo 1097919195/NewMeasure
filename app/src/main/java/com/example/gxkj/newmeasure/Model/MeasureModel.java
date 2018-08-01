@@ -16,12 +16,14 @@ import com.polidea.rxandroidble2.RxBleClient;
 import com.polidea.rxandroidble2.RxBleConnection;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 /**
  * Created by Administrator on 2018/6/4 0004.
@@ -57,8 +59,16 @@ public class MeasureModel implements MeasureContract.Model {
     @Override
     public Observable<HttpResponse> upLoadMeasureResult(String tid, String openID, int sex, MultipartBody.Part[] images, List<ContractNumWithPartsData.Parts> data, String contract_id, String address) {
         String s = (new Gson()).toJson(data);
+        LogUtils.loge("data   " +s);
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("tid", RequestBody.create(null, tid));
+        map.put("openID", RequestBody.create(null, s));
+        map.put("sex", RequestBody.create(null, String.valueOf(sex)));
+        map.put("data", RequestBody.create(null, s));
+        map.put("contract_id", RequestBody.create(null, contract_id));
+        map.put("address", RequestBody.create(null, address));
         return Api.getDefault(HostType.QUALITY_DATA)
-                .upLoadMeasureResult(tid, openID, sex, images, s, contract_id, address)
+                .upLoadMeasureResult(map, images)
                 .compose(RxSchedulers.io_main());
     }
 

@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -28,6 +29,10 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.aspsine.irecyclerview.IRecyclerView;
+import com.aspsine.irecyclerview.animation.AlphaInAnimation;
+import com.aspsine.irecyclerview.animation.ScaleInAnimation;
+import com.aspsine.irecyclerview.animation.SlideInBottomAnimation;
+import com.aspsine.irecyclerview.animation.SlideInRightAnimation;
 import com.aspsine.irecyclerview.universaladapter.ViewHolderHelper;
 import com.aspsine.irecyclerview.universaladapter.recyclerview.CommonRecycleViewAdapter;
 import com.aspsine.irecyclerview.universaladapter.recyclerview.OnItemClickListener;
@@ -513,6 +518,7 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
         rcy.setAdapter(adapter);
 //        irc.setLayoutManager(new LinearLayoutManager(this));//默认
         rcy.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+        adapter.openLoadAnimation(new SlideInRightAnimation());
 
         //listview底部跟随一个按钮，适应屏幕
         View view = View.inflate(this, R.layout.view_measure_photos, null);
@@ -650,7 +656,7 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
     protected void onDestroy() {
         super.onDestroy();
         if (speechSynthesizer != null) {
-            speechSynthesizer = null;
+            speechSynthesizer.stop();
         }
     }
 }

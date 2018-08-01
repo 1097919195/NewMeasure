@@ -15,12 +15,14 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -179,13 +181,8 @@ public interface ApiService {
     @Multipart//一定要一个不为空的part参数
     @POST("api/client/measurements")
     Observable<HttpResponse> upLoadMeasureResult(
-            @Query("tid") String tid,
-            @Query("openID") String openID,
-            @Part("sex") int sex,
-            @Part MultipartBody.Part[] images,
-            @Query("data") String data,
-            @Query("contract_id") String contract_id,
-            @Query("address") String address
+            @PartMap Map<String, RequestBody> map,
+            @Part MultipartBody.Part[] images
     );
 
     //客户端修改密码
