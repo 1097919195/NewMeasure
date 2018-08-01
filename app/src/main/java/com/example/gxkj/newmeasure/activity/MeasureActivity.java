@@ -518,7 +518,8 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
         rcy.setAdapter(adapter);
 //        irc.setLayoutManager(new LinearLayoutManager(this));//默认
         rcy.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-        adapter.openLoadAnimation(new SlideInRightAnimation());
+        adapter.closeLoadAnimation();
+//        adapter.openLoadAnimation(new SlideInRightAnimation());
 
         //listview底部跟随一个按钮，适应屏幕
         View view = View.inflate(this, R.layout.view_measure_photos, null);
