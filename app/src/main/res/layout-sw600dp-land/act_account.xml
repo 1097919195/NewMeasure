@@ -1,28 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/sign_in_frag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:fitsSystemWindows="true">
+    android:background="@mipmap/background"
+    >
+
+    <TextView
+        android:layout_centerVertical="true"
+        android:layout_marginStart="150dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="智能量体"
+        android:textSize="70sp"
+        android:textColor="@color/white"
+        android:ems="1"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/background"
-        android:orientation="vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
-
+        android:layout_marginBottom="50dp"
+        android:layout_marginRight="80dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/logo"
-            android:layout_width="176dp"
-            android:layout_height="131dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="66dp"
-            android:contentDescription="@string/img_logo"
-            android:scaleType="fitCenter"
-            android:src="@mipmap/logo" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/logo"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="500dp"
+        android:layout_height="450dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -223,4 +238,4 @@
             android:src="@mipmap/wechat_icon" />
 
     </LinearLayout>
-</ScrollView>
+</RelativeLayout>
