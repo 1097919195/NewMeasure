@@ -7,6 +7,7 @@ import com.example.gxkj.newmeasure.bean.MeasureCustomer;
 import com.example.gxkj.newmeasure.bean.MeasureWeChat;
 import com.example.gxkj.newmeasure.bean.UserData;
 import com.jaydenxiao.common.baserx.RxSubscriber;
+import com.jaydenxiao.common.baserx.RxSubscriber2;
 import com.jaydenxiao.common.commonutils.LogUtils;
 import com.polidea.rxandroidble2.scan.ScanResult;
 
@@ -17,7 +18,7 @@ import com.polidea.rxandroidble2.scan.ScanResult;
 public class MainPresenter extends MainContract.Presenter {
     @Override
     public void getUserDataRequset() {
-        mRxManage.add(mModel.getUserData().subscribeWith(new RxSubscriber<UserData>(mContext, false) {
+        mRxManage.add(mModel.getUserData().subscribeWith(new RxSubscriber2<UserData>(mContext, false) {
             @Override
             protected void _onNext(UserData userData) {
                 mView.returnGetUserData(userData);
@@ -33,7 +34,7 @@ public class MainPresenter extends MainContract.Presenter {
     @Override
     public void getBleDeviceDataRequest() {
         mRxManage.add(mModel.getBleDeviceData()
-                .subscribeWith(new RxSubscriber<ScanResult>(mContext, false) {
+                .subscribeWith(new RxSubscriber2<ScanResult>(mContext, false) {
                     @Override
                     protected void _onNext(ScanResult scanResult) {
                         mView.returnGetBleDeviceData(scanResult);
@@ -61,7 +62,7 @@ public class MainPresenter extends MainContract.Presenter {
 
     @Override
     public void changeContractNumRequest(String id) {
-        mRxManage.add(mModel.changeContractNum(id).subscribeWith(new RxSubscriber<ContractNumWithPartsData>(mContext, false) {
+        mRxManage.add(mModel.changeContractNum(id).subscribeWith(new RxSubscriber2<ContractNumWithPartsData>(mContext, false) {
             @Override
             protected void _onNext(ContractNumWithPartsData contractNumWithPartsData) {
                 mView.returnChangeContractNum(contractNumWithPartsData,id);
@@ -76,7 +77,7 @@ public class MainPresenter extends MainContract.Presenter {
 
     @Override
     public void MeasureCustomerDataRequest(String tid) {
-        mRxManage.add(mModel.MeasureCustomerData(tid).subscribeWith(new RxSubscriber<MeasureCustomer>(mContext, true) {
+        mRxManage.add(mModel.MeasureCustomerData(tid).subscribeWith(new RxSubscriber2<MeasureCustomer>(mContext, true) {
             @Override
             protected void _onNext(MeasureCustomer measureCustomer) {
                 mView.returnMeasureCustomerData(measureCustomer,tid);
@@ -91,7 +92,7 @@ public class MainPresenter extends MainContract.Presenter {
 
     @Override
     public void MeasureWeChatDataRequest(String openID) {
-        mRxManage.add(mModel.MeasureWeChatData(openID).subscribeWith(new RxSubscriber<MeasureWeChat>(mContext, true) {
+        mRxManage.add(mModel.MeasureWeChatData(openID).subscribeWith(new RxSubscriber2<MeasureWeChat>(mContext, true) {
             @Override
             protected void _onNext(MeasureWeChat measureWeChat) {
                 mView.returnMeasureWeChatData(measureWeChat);

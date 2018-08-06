@@ -7,6 +7,7 @@ import com.example.gxkj.newmeasure.bean.HttpResponse;
 import com.example.gxkj.newmeasure.utils.HexString;
 import com.example.gxkj.newmeasure.bean.MultipartBeanWithUserData;
 import com.jaydenxiao.common.baserx.RxSubscriber;
+import com.jaydenxiao.common.baserx.RxSubscriber2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +78,7 @@ public class MeasurePresenter extends MeasureContract.Presenter{
 
     @Override
     public void upLoadMeasureResultRequset(String tid, String openID, int sex, MultipartBody.Part[] images, List<ContractNumWithPartsData.Parts> data, String contract_id, String address) {
-        mRxManage.add(mModel.upLoadMeasureResult(tid, openID, sex, images, data, contract_id, address).subscribeWith(new RxSubscriber<HttpResponse>(mContext, true) {
+        mRxManage.add(mModel.upLoadMeasureResult(tid, openID, sex, images, data, contract_id, address).subscribeWith(new RxSubscriber2<HttpResponse>(mContext, true) {
             @Override
             protected void _onNext(HttpResponse httpResponse) {
                 mView.returnUpLoadMeasureResult(httpResponse);

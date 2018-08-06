@@ -62,7 +62,7 @@ public class MeasureModel implements MeasureContract.Model {
         LogUtils.loge("data   " +s);
         Map<String, RequestBody> map = new HashMap<>();
         map.put("tid", RequestBody.create(null, tid));
-        map.put("openID", RequestBody.create(null, s));
+        map.put("openID", RequestBody.create(null, openID));
         map.put("sex", RequestBody.create(null, String.valueOf(sex)));
         map.put("data", RequestBody.create(null, s));
         map.put("contract_id", RequestBody.create(null, contract_id));
@@ -71,6 +71,4 @@ public class MeasureModel implements MeasureContract.Model {
                 .upLoadMeasureResult(map, images)
                 .compose(RxSchedulers.io_main());
     }
-
-
 }
