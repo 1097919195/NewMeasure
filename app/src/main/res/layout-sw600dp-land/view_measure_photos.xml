@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="105dp"
+    android:layout_marginTop="17dp"
+    android:background="@color/white"
+    android:orientation="horizontal">
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/c999" />
+
+    <RelativeLayout
+        android:id="@+id/camera_add"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="21dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="21dp"
+        android:background="@drawable/btn_radius_1_ddd">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="28dp"
+            android:layout_height="24dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/camera_1" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_1"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp">
+
+        <ImageView
+            android:id="@+id/img_1"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_radius_1_ddd"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/del_1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="top|end"
+            android:src="@drawable/del_round"
+            android:visibility="invisible" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_2"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp">
+
+        <ImageView
+            android:id="@+id/img_2"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_radius_1_ddd"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/del_2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="top|end"
+            android:src="@drawable/del_round"
+            android:visibility="invisible" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_3"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp">
+
+        <ImageView
+            android:id="@+id/img_3"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:background="@drawable/btn_radius_1_ddd"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/del_3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="top|end"
+            android:src="@drawable/del_round"
+            android:visibility="invisible" />
+    </FrameLayout>
+
+</LinearLayout>

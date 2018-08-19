@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -514,7 +515,13 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
             }
         };
 
-        rcy.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));//默认分割线
+        //默认分割线
+//        rcy.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        //添加自定义分割线
+        DividerItemDecoration divider = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);//这里导入的包和自己封装的库不同
+        divider.setDrawable(ContextCompat.getDrawable(this,R.drawable.custom_divider));
+        rcy.addItemDecoration(divider);
+
         rcy.setAdapter(adapter);
 //        irc.setLayoutManager(new LinearLayoutManager(this));//默认
         rcy.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));

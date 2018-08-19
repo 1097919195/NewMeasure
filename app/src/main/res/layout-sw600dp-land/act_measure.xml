@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -19,20 +21,73 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
-        android:layout_marginBottom="50dp"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="3"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include
+                    android:id="@+id/include"
+                    layout="@layout/view_measurer_info" />
+
+                <TextView
+                    android:layout_below="@+id/include"
+                    android:id="@+id/unmeasured_item_hint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="待测部位"
+                    android:textAlignment="center"
+                    android:textColor="@color/unmeasured"
+                    android:textSize="42sp"
+                    android:lines="1"
+                    android:singleLine="true"/>
+
+                <Button
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/unmeasured_item_hint"
+                    android:layout_marginTop="100dp"
+                    android:id="@+id/save_measure_result"
+                    android:layout_width="250dp"
+                    android:layout_height="65dp"
+                    android:background="@color/primary"
+                    android:text="保存"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="量体总数，该用户量体次数"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
             android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/item_title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/measure_layout_header_bg">
+                android:layout_height="wrap_content">
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/c999" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -44,7 +99,7 @@
                     android:text="量体部位"
                     android:textAlignment="center"
                     android:textSize="@dimen/item_title"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black" />
 
                 <View
                     android:layout_width="1dp"
@@ -61,7 +116,13 @@
                     android:text="测量结果(cm/°)"
                     android:textAlignment="center"
                     android:textSize="@dimen/item_title"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/c999" />
 
                 <!--<View-->
                 <!--android:layout_width="1dp"-->
@@ -87,41 +148,6 @@
             </com.aspsine.irecyclerview.IRecyclerView>
 
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <include layout="@layout/view_measurer_info" />
-
-            <TextView
-                android:id="@+id/unmeasured_item_hint"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@color/white"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp"
-                android:text="待测部位"
-                android:textAlignment="center"
-                android:textColor="@color/unmeasured"
-                android:textSize="42sp" />
-        </LinearLayout>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/save_measure_result"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:background="@color/primary"
-        android:text="保存"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="22sp" />
 
 </RelativeLayout>

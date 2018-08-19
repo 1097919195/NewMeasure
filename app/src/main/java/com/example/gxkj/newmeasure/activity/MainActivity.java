@@ -147,7 +147,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
             AppConstant.LOCATION_ADDRESS = location.getAddrStr();
             if (AppConstant.LOCATION_ADDRESS == null) {
                 AppConstant.LOCATION_ADDRESS = "定位失败";
-            }else {
+            } else {
                 LogUtils.loge("用户登陆的位置信息：" + AppConstant.LOCATION_ADDRESS);
             }
         }
@@ -268,7 +268,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                                 rxBleDeviceAddressList.clear();
                                 bleDeviceList.clear();
                                 mPresenter.getBleDeviceDataRequest();
-                            }else {
+                            } else {
                                 ToastUtil.showShort("需要开启位置信息才能支持蓝牙搜索");
                             }
 
@@ -381,7 +381,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                         .onPositive((dialog, which) -> {
                             drawerLayout.closeDrawers();
                             dialog.dismiss();
-                            SPUtils.setSharedStringData(AppApplication.getAppContext(),AppConstant.LOGIN_TOKEN,"");
+                            SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.LOGIN_TOKEN, "");
                             AppManager.getAppManager().finishAllActivity();
                             Intent intent = new Intent(MainActivity.this, AccountActivity.class);
                             startActivity(intent);
@@ -519,13 +519,13 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
             navView.getMenu()
                     .add(R.id.device, R.id.nav_contract, 1, "合同号(" + contractNumWithPartsData.getName() + ")")
                     .setIcon(R.drawable.ic_contract);
-            SPUtils.setSharedStringData(AppApplication.getAppContext(),AppConstant.CONTRACT_ID_SP,contractNumWithPartsData.get_id());//设置合同id
+            SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_ID_SP, contractNumWithPartsData.get_id());//设置合同id
         } else {
             navView.getMenu().removeItem(R.id.nav_contract);
             navView.getMenu()
                     .add(R.id.device, R.id.nav_contract, 1, "合同号(默认)")
                     .setIcon(R.drawable.ic_contract);
-            SPUtils.setSharedStringData(AppApplication.getAppContext(),AppConstant.CONTRACT_ID_SP,"default");//设置合同id
+            SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_ID_SP, "default");//设置合同id
         }
         SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_NUM, contract);//设置合同号，下次初始化进入直接加载对应的合同号
         partsArrayList = contractNumWithPartsData.getParts();
@@ -534,8 +534,8 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
     //根据合同号获取的合同成员信息
     @Override
-    public void returnMeasureCustomerData(MeasureCustomer measureCustomer,String tid) {
-        if (partsArrayList != null) {
+    public void returnMeasureCustomerData(MeasureCustomer measureCustomer, String tid) {
+        if (partsArrayList != null && partsArrayList.size() != 0) {
             contractID = SPUtils.getSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_ID_SP);
             MeasureActivity.startAction(MainActivity.this, partsArrayList, measureCustomer.getAvatar(), measureCustomer.getName(), measureCustomer.getGender(), 1, tid, contractID);
         } else {
@@ -551,7 +551,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 //        } else {
 //            ToastUtil.showShort("当前为合同量体请先恢复为默认量体再进行微信用户的量体");
 //        }
-        if (partsArrayList != null) {
+        if (partsArrayList != null && partsArrayList.size() != 0) {
             contractID = SPUtils.getSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_ID_SP);
             MeasureActivity.startAction(MainActivity.this, partsArrayList, measureWeChat.getAvatar(), measureWeChat.getNickname(), measureWeChat.getGender(), 2, measureWeChat.getOpenID(), contractID);
         } else {
@@ -580,7 +580,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         }
         //用户信息的token过期时
         if (msg == "token过期") {
-            SPUtils.setSharedStringData(AppApplication.getAppContext(),AppConstant.LOGIN_TOKEN,"");
+            SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.LOGIN_TOKEN, "");
             AppManager.getAppManager().finishAllActivity();
             Intent intent = new Intent(MainActivity.this, AccountActivity.class);
             startActivity(intent);

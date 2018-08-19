@@ -33,7 +33,9 @@
             android:text="待测部位"
             android:textAlignment="center"
             android:textColor="@color/unmeasured"
-            android:textSize="42sp" />
+            android:textSize="42sp"
+            android:lines="1"
+            android:singleLine="true"/>
 
         <LinearLayout
             android:id="@+id/item_title"
