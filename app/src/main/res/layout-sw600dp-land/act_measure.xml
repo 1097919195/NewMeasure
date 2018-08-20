@@ -66,10 +66,11 @@
                     android:textSize="22sp" />
 
                 <TextView
+                    android:id="@+id/measureTimes"
                     android:layout_alignParentBottom="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="量体总数，该用户量体次数"/>
+                    android:text="该用户已经测量 0 次"/>
             </RelativeLayout>
         </LinearLayout>
 

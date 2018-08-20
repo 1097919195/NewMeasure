@@ -29,6 +29,7 @@ public class AppConstant {
     public static final String CONTRACT_ID = "CONTRACT_ID";
     public static final String CONTRACT_ID_SP = "CONTRACT_ID_SP";
     public static final String DISPLAY_BIG_PART = "DISPLAY_BIG_PART";
+    public static final String MEASURE_TIMES = "MEASURE_TIMES";
 
     public static final String FILE_PROVIDER_NAME = "gtImage";
     public static String LOCATION_ADDRESS = "LOCATION_ADDRESS";

@@ -105,6 +105,8 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
     Button save_measure_result;
     @BindView(R.id.unmeasured_item_hint)
     TextView unmeasured_item_hint;
+    @BindView(R.id.measureTimes)
+    TextView measureTimes;
 
     FrameLayout frame1;
     FrameLayout frame2;
@@ -147,7 +149,7 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
     String address;
 
 
-    public static void startAction(Activity activity, ArrayList<ContractNumWithPartsData.Parts> partsArrayList, String UserPhoto, String UserName, int gender, int signTidOrOpenID, String tidOrOpenID, String contractID) {
+    public static void startAction(Activity activity, ArrayList<ContractNumWithPartsData.Parts> partsArrayList, String UserPhoto, String UserName, int gender, int signTidOrOpenID, String tidOrOpenID, String contractID, int measureTimes) {
         Intent intent = new Intent(activity, MeasureActivity.class);
         intent.putExtra(AppConstant.PARTS_CONTRACT_NUM, partsArrayList);
         intent.putExtra(AppConstant.PARTS_USER_PHOTO, UserPhoto);
@@ -156,6 +158,7 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
         intent.putExtra(AppConstant.SIGN_TID_OR_OPENID, signTidOrOpenID);//tid为1,openID为2
         intent.putExtra(AppConstant.TID_OR_OPENID, tidOrOpenID);
         intent.putExtra(AppConstant.CONTRACT_ID, contractID);
+        intent.putExtra(AppConstant.MEASURE_TIMES, measureTimes);
         activity.startActivity(intent);
     }
 
@@ -234,6 +237,15 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
         genderLine.setOnClickListener(v -> {
             switchGender();
         });
+
+        // todo 合同量体没用统计返回了-1
+        if (getIntent().getIntExtra(AppConstant.MEASURE_TIMES, 0) < 0) {
+            measureTimes.setText("合同量体暂未统计");
+        } else {
+            measureTimes.setText(AppApplication.getAppContext()
+                    .getString(R.string.measureTimes, getIntent().getIntExtra(AppConstant.MEASURE_TIMES,0)));
+        }
+
 
         del_1.setOnClickListener(v -> delPic((ImageView) v));
         del_2.setOnClickListener(v -> delPic((ImageView) v));

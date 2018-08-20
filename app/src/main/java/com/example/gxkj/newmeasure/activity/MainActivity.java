@@ -537,7 +537,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     public void returnMeasureCustomerData(MeasureCustomer measureCustomer, String tid) {
         if (partsArrayList != null && partsArrayList.size() != 0) {
             contractID = SPUtils.getSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_ID_SP);
-            MeasureActivity.startAction(MainActivity.this, partsArrayList, measureCustomer.getAvatar(), measureCustomer.getName(), measureCustomer.getGender(), 1, tid, contractID);
+            MeasureActivity.startAction(MainActivity.this, partsArrayList, measureCustomer.getAvatar(), measureCustomer.getName(), measureCustomer.getGender(), 1, tid, contractID, -1);
         } else {
             ToastUtil.showShort("请先设置合同号");
         }
@@ -553,7 +553,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 //        }
         if (partsArrayList != null && partsArrayList.size() != 0) {
             contractID = SPUtils.getSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_ID_SP);
-            MeasureActivity.startAction(MainActivity.this, partsArrayList, measureWeChat.getAvatar(), measureWeChat.getNickname(), measureWeChat.getGender(), 2, measureWeChat.getOpenID(), contractID);
+            MeasureActivity.startAction(MainActivity.this, partsArrayList, measureWeChat.getAvatar(), measureWeChat.getNickname(), measureWeChat.getGender(), 2, measureWeChat.getOpenID(), contractID, measureWeChat.getMeasureTimes());
         } else {
             ToastUtil.showShort("请先设置合同号");
         }
