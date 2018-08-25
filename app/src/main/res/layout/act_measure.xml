@@ -21,6 +21,15 @@
 
         <include layout="@layout/view_measurer_info" />
 
+        <!--竖屏不显示-->
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/measureTimes"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="该用户已经测量 0 次"/>
+
         <TextView
             android:id="@+id/unmeasured_item_hint"
             android:layout_width="match_parent"

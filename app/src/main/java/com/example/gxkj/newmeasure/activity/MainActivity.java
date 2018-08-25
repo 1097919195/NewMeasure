@@ -93,7 +93,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     public static void startAction(Activity activity) {
         Intent intent = new Intent(activity, MainActivity.class);
         activity.startActivity(intent);
-        activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     @Override

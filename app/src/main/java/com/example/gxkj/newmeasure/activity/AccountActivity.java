@@ -3,6 +3,7 @@ package com.example.gxkj.newmeasure.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Settings;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -66,7 +67,9 @@ public class AccountActivity extends BaseActivity<LoginPresenter, LoginModel> im
     @Override
     public void initView() {
         if (!isFirstRun) {
-            initPremission();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//在6.0以上试发起请求询问
+                initPremission();
+            }
             SPUtils.setSharedBooleanData(AppApplication.getAppContext(),AppConstant.IS_FIRST_RUN,true);
         }
         initUserInfo();
@@ -75,8 +78,25 @@ public class AccountActivity extends BaseActivity<LoginPresenter, LoginModel> im
 
     private void initPremission() {
         //请求多个权限
-        PermissionUtils.checkAndRequestMorePermissions(this,permissions,permissionCode);
+//        PermissionUtils.checkAndRequestMorePermissions(this,permissions,permissionCode);
         LogUtils.loge("firstRun");
+        RxPermissions rxPermissions = new RxPermissions(AccountActivity.this);
+        rxPermissions.request(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE,Manifest.permission.ACCESS_COARSE_LOCATION).subscribe(
+                aBoolean -> {
+//                        if (aBoolean==true) {
+//                            //请求成功处理的事件
+//                        } else {
+//                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(AccountActivity.this);
+//                            alertDialog.setMessage("请手动开启权限！");
+//                            alertDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    finish();
+//                                }
+//                            });
+//                            alertDialog.create().show();
+//                        }
+                });
     }
 
     private void initUserInfo() {
