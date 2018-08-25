@@ -34,8 +34,10 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppWelcome" parent="android:Theme.Translucent.NoTitleBar.Fullscreen"/>
-    <style name="AppWelcome.wallpaper" parent="AppWelcome">
-        <item name="android:windowBackground">@mipmap/slogan2</item>
+    <style name="AppWelcome.wallpaper" parent="AppTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:background">@mipmap/background</item>
     </style>
 
 </resources>
