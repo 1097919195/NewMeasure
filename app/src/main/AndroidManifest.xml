@@ -57,8 +57,10 @@
             android:screenOrientation="nosensor"/>
         <activity android:name=".activity.MeasureActivity"
             android:screenOrientation="nosensor"/>
-        <activity android:name=".activity.ManagePassWordActicity" />
-        <activity android:name=".activity.ContactActivity" />
+        <activity android:name=".activity.ManagePassWordActicity"
+            android:screenOrientation="nosensor"/>
+        <activity android:name=".activity.ContactActivity"
+            android:screenOrientation="nosensor"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
