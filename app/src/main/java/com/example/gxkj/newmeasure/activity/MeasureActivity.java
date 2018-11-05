@@ -380,7 +380,7 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
             // 申请临时访问权限
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
                     | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);//将拍取的照片保存到指定URI
         } else {
             intent.addCategory(Intent.CATEGORY_DEFAULT);
             imageUri = Uri.fromFile(outputImage);
