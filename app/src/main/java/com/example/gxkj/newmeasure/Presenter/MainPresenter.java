@@ -3,6 +3,7 @@ package com.example.gxkj.newmeasure.Presenter;
 import com.example.gxkj.newmeasure.Contract.MainContract;
 import com.example.gxkj.newmeasure.bean.ContractNumWithPartsData;
 import com.example.gxkj.newmeasure.bean.HttpResponse;
+import com.example.gxkj.newmeasure.bean.LoginTokenData;
 import com.example.gxkj.newmeasure.bean.MeasureCustomer;
 import com.example.gxkj.newmeasure.bean.MeasureWeChat;
 import com.example.gxkj.newmeasure.bean.UserData;
@@ -96,6 +97,21 @@ public class MainPresenter extends MainContract.Presenter {
             @Override
             protected void _onNext(MeasureWeChat measureWeChat) {
                 mView.returnMeasureWeChatData(measureWeChat);
+            }
+
+            @Override
+            protected void _onError(String message) {
+                mView.showErrorTip(message);
+            }
+        }));
+    }
+
+    @Override
+    public void getRefreshToken() {
+        mRxManage.add(mModel.refreshToken().subscribeWith(new RxSubscriber2<LoginTokenData>(mContext, false) {
+            @Override
+            protected void _onNext(LoginTokenData loginTokenData) {
+                mView.returnRefreshToken(loginTokenData);
             }
 
             @Override

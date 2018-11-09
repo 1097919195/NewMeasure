@@ -193,5 +193,10 @@ public interface ApiService {
             @Field("new_password") String new_password
     );
 
+    //刷新Token
+    @POST("api/client/refresh")
+    Observable<HttpResponse<LoginTokenData>> refreshToken(
+    );
+
 
 }

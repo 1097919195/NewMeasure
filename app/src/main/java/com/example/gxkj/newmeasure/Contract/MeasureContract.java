@@ -2,6 +2,7 @@ package com.example.gxkj.newmeasure.Contract;
 
 import com.example.gxkj.newmeasure.bean.ContractNumWithPartsData;
 import com.example.gxkj.newmeasure.bean.HttpResponse;
+import com.example.gxkj.newmeasure.bean.LoginTokenData;
 import com.example.gxkj.newmeasure.bean.MultipartBeanWithUserData;
 import com.jaydenxiao.common.base.BaseModel;
 import com.jaydenxiao.common.base.BasePresenter;
@@ -27,6 +28,7 @@ public interface MeasureContract {
         Observable<RxBleConnection.RxBleConnectionState> checkBleConnectState();
 
         Observable<HttpResponse> upLoadMeasureResult(String tid, String openID, int sex, MultipartBody.Part[] images, List<ContractNumWithPartsData.Parts> data, String contract_id, String address);
+
     }
 
     interface View extends BaseView {
@@ -35,6 +37,7 @@ public interface MeasureContract {
         void returnCheckBleConnectState(RxBleConnection.RxBleConnectionState connectionState);
 
         void returnUpLoadMeasureResult(HttpResponse httpResponse);
+
     }
 
     abstract class Presenter extends BasePresenter<View, Model> {
@@ -43,5 +46,6 @@ public interface MeasureContract {
         public abstract void checkBleConnectStateRequest();
 
         public abstract void upLoadMeasureResultRequset(String tid, String openID, int sex, MultipartBody.Part[] images, List<ContractNumWithPartsData.Parts> data, String contract_id, String address);
+
     }
 }

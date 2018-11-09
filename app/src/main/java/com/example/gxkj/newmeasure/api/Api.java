@@ -16,6 +16,7 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.jaydenxiao.common.baseapp.BaseApplication;
+import com.jaydenxiao.common.commonutils.LogUtils;
 import com.jaydenxiao.common.commonutils.NetWorkUtils;
 import com.jaydenxiao.common.commonutils.SPUtils;
 
@@ -113,6 +114,15 @@ public class Api {
                         .addHeader("Authorization", jwt)
                         .addHeader("Content-Type", "application/json")//Content-Type向接收方指示实体的介质类型，指定HEAD方法送到接收方的实体介质类型，或GET方法发送的请求介质类型
                         .build();
+
+                //判断token刷新接口和过期的区别
+                Request request = chain.request();
+                LogUtils.loge(request.url().toString());
+                if (request.url().toString().equals("https://n.npclo.com/api/client/refresh")) {
+                    SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.REFRESH_URL, request.url().toString());
+                }else {
+                    SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.REFRESH_URL, "");
+                }
                 return chain.proceed(build);
             }
         };

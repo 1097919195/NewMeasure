@@ -8,6 +8,7 @@ import com.example.gxkj.newmeasure.api.HostType;
 import com.example.gxkj.newmeasure.app.AppApplication;
 import com.example.gxkj.newmeasure.bean.ContractNumWithPartsData;
 import com.example.gxkj.newmeasure.bean.HttpResponse;
+import com.example.gxkj.newmeasure.bean.LoginTokenData;
 import com.example.gxkj.newmeasure.bean.MeasureCustomer;
 import com.example.gxkj.newmeasure.bean.MeasureWeChat;
 import com.example.gxkj.newmeasure.bean.UserData;
@@ -78,6 +79,14 @@ public class MainModel implements MainContract.Model {
     public Observable<MeasureWeChat> MeasureWeChatData(String openID) {
         return Api.getDefault(HostType.QUALITY_DATA)
                 .MeasureWeChat(openID)
+                .map(new Api.HttpResponseFunc<>())
+                .compose(RxSchedulers.io_main());
+    }
+
+    @Override
+    public Observable<LoginTokenData> refreshToken() {
+        return Api.getDefault(HostType.QUALITY_DATA)
+                .refreshToken()
                 .map(new Api.HttpResponseFunc<>())
                 .compose(RxSchedulers.io_main());
     }

@@ -36,4 +36,7 @@ public class AppConstant {
     public static final String IS_FIRST_RUN = "IS_FIRST_RUN";
 
 
+    public static final String REFRESH_URL = "REFRESH_URL";
+
+
 }

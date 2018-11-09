@@ -34,6 +34,7 @@ import com.example.gxkj.newmeasure.app.AppConstant;
 import com.example.gxkj.newmeasure.bean.BleDevice;
 import com.example.gxkj.newmeasure.bean.ContractNumWithPartsData;
 import com.example.gxkj.newmeasure.bean.HttpResponse;
+import com.example.gxkj.newmeasure.bean.LoginTokenData;
 import com.example.gxkj.newmeasure.bean.MeasureCustomer;
 import com.example.gxkj.newmeasure.bean.MeasureWeChat;
 import com.example.gxkj.newmeasure.bean.UserData;
@@ -528,7 +529,6 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         }
         SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_NUM, contract);//设置合同号，下次初始化进入直接加载对应的合同号
         partsArrayList = contractNumWithPartsData.getParts();
-        LogUtils.loge(String.valueOf(partsArrayList.size()));
     }
 
     //根据合同号获取的合同成员信息
@@ -559,6 +559,18 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
     }
 
+    //重新刷新Token
+    @Override
+    public void returnRefreshToken(LoginTokenData tokenData) {
+        SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.REFRESH_URL, "");
+        if (tokenData != null) {
+            SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.LOGIN_TOKEN, tokenData.getToken_type() + tokenData.getAccess_token());
+        }else {
+            ToastUtil.showShort("token刷新失败");
+        }
+    }
+
+
     @Override
     public void showLoading(String title) {
         if (title == "chooseConnect") {
@@ -579,11 +591,20 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         }
         //用户信息的token过期时
         if (msg == "token过期") {
-            SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.LOGIN_TOKEN, "");
-            AppManager.getAppManager().finishAllActivity();
-            Intent intent = new Intent(MainActivity.this, AccountActivity.class);
-            startActivity(intent);
-            ToastUtil.showShort("用户信息已经过期,请重新登录");
+            //当URL指向刷新Token时
+            if (SPUtils.getSharedStringData(AppApplication.getAppContext(),AppConstant.REFRESH_URL).equals("https://n.npclo.com/api/client/refresh")){
+                SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.LOGIN_TOKEN, "");
+                SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.REFRESH_URL, "");
+                AppManager.getAppManager().finishAllActivity();
+                Intent intent = new Intent(MainActivity.this, AccountActivity.class);
+                startActivity(intent);
+                ToastUtil.showShort("用户信息已经过期,请重新登录");
+            }else {
+                //先设空再请求，然后请求成功后设置为空
+                SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.REFRESH_URL, "");
+                mPresenter.getRefreshToken();
+                ToastUtil.showShort("刷新了Token,请再试");
+            }
             return;
         }
         ToastUtil.showShort(msg);
