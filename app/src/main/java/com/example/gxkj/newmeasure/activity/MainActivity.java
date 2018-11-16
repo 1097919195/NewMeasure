@@ -610,7 +610,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                 //先设空再请求，然后请求成功后设置为空
                 SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.REFRESH_URL, "");
                 mPresenter.getRefreshToken();
-                ToastUtil.showShort("刷新了Token,请再试");
+                ToastUtil.showShort("刷新了Token");
             }
             return;
         }
