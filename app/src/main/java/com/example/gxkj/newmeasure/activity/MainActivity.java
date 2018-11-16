@@ -221,12 +221,12 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
     private void initDrawerMenuContent() {
         initBleState();
         configureBleList();
-        //初始化加载合同号(合同号也需要重网络获取，包括默认的)
-        if (!SPUtils.getSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_NUM).isEmpty()) {
-            mPresenter.changeContractNumRequest(SPUtils.getSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_NUM));
-        } else {
-            mPresenter.changeContractNumRequest("default");
-        }
+//        //初始化加载合同号(合同号也需要重网络获取，包括默认的)  放到用户信息加载完了之后再发请求获取合同号
+//        if (!SPUtils.getSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_NUM).isEmpty()) {
+//            mPresenter.changeContractNumRequest(SPUtils.getSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_NUM));
+//        } else {
+//            mPresenter.changeContractNumRequest("default");
+//        }
         View headerView = navView.getHeaderView(0);
         currTimesView = headerView.findViewById(R.id.curr_times);
         totalTimesView = headerView.findViewById(R.id.total_times);
@@ -469,6 +469,12 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         userNameView.setText(userData.getName());
         currTimesView.setText(String.valueOf(userData.getMonthCount()));
         totalTimesView.setText(String.valueOf(userData.getTotalCount()));
+        //初始化加载合同号(合同号也需要重网络获取，包括默认的)  用户信息加载完了之后再发请求获取合同号
+        if (!SPUtils.getSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_NUM).isEmpty()) {
+            mPresenter.changeContractNumRequest(SPUtils.getSharedStringData(AppApplication.getAppContext(), AppConstant.CONTRACT_NUM));
+        } else {
+            mPresenter.changeContractNumRequest("default");
+        }
     }
 
     //获取附近的蓝牙设备
@@ -559,12 +565,13 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
 
     }
 
-    //重新刷新Token
+    //重新刷新Token获取用户信息
     @Override
     public void returnRefreshToken(LoginTokenData tokenData) {
         SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.REFRESH_URL, "");
         if (tokenData != null) {
             SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.LOGIN_TOKEN, tokenData.getToken_type() + tokenData.getAccess_token());
+            mPresenter.getUserDataRequset();
         }else {
             ToastUtil.showShort("token刷新失败");
         }
