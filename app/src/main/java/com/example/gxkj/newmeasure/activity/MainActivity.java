@@ -379,7 +379,7 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
                         .negativeText(R.string.cancel)
                         .backgroundColor(getResources().getColor(R.color.white))
                         .onPositive((dialog, which) -> {
-                            drawerLayout.closeDrawers();
+//                            drawerLayout.closeDrawers();//这里就不用关了，可以让退出的动画更流畅
                             dialog.dismiss();
                             SPUtils.setSharedStringData(AppApplication.getAppContext(), AppConstant.LOGIN_TOKEN, "");
                             AppManager.getAppManager().finishAllActivity();
@@ -628,7 +628,12 @@ public class MainActivity extends BaseActivity<MainPresenter, MainModel> impleme
         if (drawerLayout.isDrawerOpen(navView)) {
             drawerLayout.closeDrawers();
             return;
+        }else {//这里如果使用按返回不退出应用需要不重写父类的super.onBackPressed()--防止继续传递事件即可（因为先执行onBackPressed在指定onKeyDown）
+            Intent home = new Intent(Intent.ACTION_MAIN);
+            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            home.addCategory(Intent.CATEGORY_HOME);
+            startActivity(home);
         }
-        super.onBackPressed();
+//        super.onBackPressed();
     }
 }

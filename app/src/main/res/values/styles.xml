@@ -33,6 +33,7 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
+    //因为这里兼容了平板和手机的冷启动（横屏和竖屏）所以使用了透明的冷启动方式
     <style name="AppWelcome" parent="android:Theme.Translucent.NoTitleBar.Fullscreen"/>
     <style name="AppWelcome.wallpaper" parent="AppTheme">
         <item name="android:windowIsTranslucent">true</item>
