@@ -251,7 +251,8 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
         del_2.setOnClickListener(v -> delPic((ImageView) v));
         del_3.setOnClickListener(v -> delPic((ImageView) v));
 
-        RxView.clicks(save_measure_result)
+        //RxManager统一管理Rxjava系列
+        mRxManager.add(RxView.clicks(save_measure_result)
                 .throttleFirst(2, TimeUnit.SECONDS)
                 .subscribe(new Consumer<Object>() {
                     @Override
@@ -325,7 +326,7 @@ public class MeasureActivity extends BaseActivity<MeasurePresenter, MeasureModel
                         }
 
                     }
-                });
+                }));
     }
 
     private void delPic(ImageView view) {
